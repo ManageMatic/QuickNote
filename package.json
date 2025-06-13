@@ -7,14 +7,19 @@
     "mongoose": "^8.9.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-scripts": "5.0.1"
+    "react-router-dom": "^7.6.2",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^5.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon backend/index.js",
+    "both": "concurrently \"npm run start\" \"npm run server\""
   },
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -34,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10"
   }
 }
