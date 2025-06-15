@@ -1,12 +1,14 @@
-import React from 'react'
+//import React, { useContext, useEffect } from 'react'
+//import NoteContext from '../context/notes/NoteContext'
 
 const About = () => {
   return (
     <div>
-      <h1>About Us</h1>
-      <p>This application is designed to help users manage their tasks efficiently.</p>
-      <p>We aim to provide a user-friendly interface and robust functionality to enhance productivity.</p>
-      <p>Thank you for using our application!</p>
+      <h1>About QuickNote</h1>
+      <p>QuickNote is a simple note-taking application that allows you to create, edit, and delete notes easily.</p>
+      <p>Version: 1.0.0</p>
+      <p>Developed by: Your Name</p>
+      <p>Contact:</p>
     </div>
   )
 }
