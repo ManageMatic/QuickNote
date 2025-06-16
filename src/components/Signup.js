@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = (props) => {
     const [credentials, setCredentials] = React.useState({ name: "", email: "", password: "", cpassword: "" });
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
@@ -23,9 +23,10 @@ const Signup = () => {
         // Save the auth token and redirect
         if (json.success) {
             localStorage.setItem('token', json.authToken);
+            props.showAlert("Account created successfully", "success");
             navigate('/login');
         } else {
-            alert("Invalid credentials");
+            props.showAlert("Invalid credentials", "danger");
         }
     }
     const onChange = (e) => {
@@ -37,19 +38,19 @@ const Signup = () => {
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
-                    <input type="text" className="form-control" id="name" name="name" onChange={onChange} />
+                    <input type="text" className="form-control" id="name" name="name" onChange={onChange} required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="email" name="email" onChange={onChange} aria-describedby="emailHelp" />
+                    <input type="email" className="form-control" id="email" name="email" onChange={onChange} aria-describedby="emailHelp" required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="password" name="password" onChange={onChange} />
+                    <input type="password" className="form-control" id="password" name="password" onChange={onChange} minLength={5} required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="cpassword" className="form-label">Confirm Password</label>
-                    <input type="password" className="form-control" id="cpassword" name="cpassword" onChange={onChange} />
+                    <input type="password" className="form-control" id="cpassword" name="cpassword" onChange={onChange} minLength={5} required />
                 </div>
                 <button type="submit" className="btn btn-primary">Signup</button>
             </form>

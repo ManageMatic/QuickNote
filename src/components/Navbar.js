@@ -1,11 +1,17 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/apple-touch-icon.png'
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = (props) => {
   let location = useLocation();
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
   return (
-    <nav className="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+    <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
       <div className="container-fluid">
         <img src={logo} alt="Logo" width="40" height="40" className="d-inline-block align-text-top me-2" />
         <Link className="navbar-brand" to="/">QuickNote</Link>
@@ -21,10 +27,18 @@ const Navbar = () => {
               <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <Link className='btn btn-primary mx-1' to='/login' role='button'>Login</Link>
-            <Link className='btn btn-primary mx-1' to='/signup' role='button'>Signup</Link>
-          </form>
+          {localStorage.getItem('token')
+            ? (
+              <form className="d-flex" role="search">
+                <button className='btn btn-primary mx-1' onClick={handleLogOut}>Logout</button>
+              </form>
+            ) : (
+              <form className="d-flex" role="search">
+                <Link className='btn btn-primary mx-1' to='/login'>Login</Link>
+                <Link className='btn btn-primary mx-1' to='/signup'>Signup</Link>
+              </form>
+            )
+          }
         </div>
       </div>
     </nav>
