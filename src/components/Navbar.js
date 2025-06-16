@@ -5,7 +5,7 @@ import logo from '../assets/apple-touch-icon.png'
 const Navbar = () => {
   let location = useLocation();
   return (
-    <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav className="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
       <div className="container-fluid">
         <img src={logo} alt="Logo" width="40" height="40" className="d-inline-block align-text-top me-2" />
         <Link className="navbar-brand" to="/">QuickNote</Link>
@@ -15,12 +15,16 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname==="/" ? "active": ""}`} aria-current="page" to="/">Home</Link>
+              <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname==="/about" ? "active": ""}`} to="/about">About</Link>
+              <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
             </li>
           </ul>
+          <form className="d-flex" role="search">
+            <Link className='btn btn-primary mx-1' to='/login' role='button'>Login</Link>
+            <Link className='btn btn-primary mx-1' to='/signup' role='button'>Signup</Link>
+          </form>
         </div>
       </div>
     </nav>

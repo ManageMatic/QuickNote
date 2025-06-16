@@ -14,9 +14,10 @@ router.post('/createuser', [
     body('email').isEmail(),
     body('password').isLength({ min: 5 }),
 ], async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({success, errors: errors.array() });
     }
 
     // Check if the user with this email already exists
@@ -41,7 +42,8 @@ router.post('/createuser', [
             }
         }
         const authToken = jwt.sign(data, JWT_SECRET);
-        res.json({ authToken })
+        success = true;
+        res.json({ success, authToken })
 
         // res.json(user);
     } catch (error) {
@@ -69,13 +71,15 @@ router.post('/login', [
     try {
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: "Invalid credentials" });
+            let success = false;
+            return res.status(400).json({ success, error: "Invalid credentials" });
         }
 
         // Check if password matches
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
-            return res.status(400).json({ error: "Invalid credentials" });
+            let success = false;
+            return res.status(400).json({ success, error: "Invalid credentials" });
         }
 
         // Return a JWT token
@@ -85,7 +89,8 @@ router.post('/login', [
             }
         }
         const authToken = jwt.sign(data, JWT_SECRET);
-        res.json({ authToken })
+        let success = true;
+        res.json({ success, authToken })
 
     } catch (error) {
         console.error(error.message)
