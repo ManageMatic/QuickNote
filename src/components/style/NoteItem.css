@@ -1,0 +1,63 @@
+.col-md-3 {
+    flex: 1 1 250px;
+    max-width: 100%;
+}
+
+.custom-card {
+    background-color: #A8D5E2;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: none;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.note-title {
+    color: #001F3F;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.note-description {
+    color: #052560;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.note-tag {
+    color: #FFD700;
+    font-size: 0.85rem;
+}
+
+.icon-edit,
+.icon-delete {
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.icon-edit {
+    color: #052560;
+}
+
+.icon-edit:hover {
+    color: #001F3F;
+}
+
+.icon-delete {
+    color: #dc3545;
+}
+
+.icon-delete:hover {
+    color: #a50000;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
