@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import NoteContext from '../context/notes/NoteContext';
+import './styles/AddNote.css';
 
 const AddNote = (props) => {
     const context = useContext(NoteContext);
@@ -35,7 +36,6 @@ const AddNote = (props) => {
                 </div>
                 <button type="submit" disabled={note.title.length===0 || note.description.length===0} className="btn btn-primary" onClick={handleClick}>Add Note</button>
             </form>
-            <hr />
         </div>
     )
 }

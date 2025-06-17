@@ -21,7 +21,7 @@ const Home = (props) => {
     }
   }, []);
   return (
-    <div className="container my-3">
+    <div className="container" style={{ marginTop: "70px"}}>
       <h1 className='container my-3'>Welcome {user ? user.name : "User"} to QuickNote</h1>
       <AddNote showAlert={showAlert} />
       <Notes showAlert={showAlert} />

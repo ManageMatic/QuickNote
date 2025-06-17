@@ -1,10 +1,11 @@
 import React from 'react'
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './styles/Login.css';
 
 const Login = (props) => {
 
     const [credentials, setCredentials] = React.useState({ email: "", password: "" });
-    const navigate = useNavigate ();
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle login logic here
@@ -33,20 +34,36 @@ const Login = (props) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
     return (
-        <div className="container my-3">
-            <h1>Login to QuickNote</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+        <div className="login-container my-3">
+            <h1 className="login-title">Login to QuickNote</h1>
+            <form onSubmit={handleSubmit} className="login-form">
+                <div className="form-group">
                     <label htmlFor="email" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="email" name="email" value={credentials.email} onChange={onchange} aria-describedby="emailHelp" />
+                    <input
+                        type="email"
+                        className="form-control login-input"
+                        id="email"
+                        name="email"
+                        value={credentials.email}
+                        onChange={onchange}
+                        aria-describedby="emailHelp"
+                    />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="password" name="password" value={credentials.password} onChange={onchange} />
+                    <input
+                        type="password"
+                        className="form-control login-input"
+                        id="password"
+                        name="password"
+                        value={credentials.password}
+                        onChange={onchange}
+                    />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-login">Login</button>
             </form>
         </div>
+
     )
 }
 

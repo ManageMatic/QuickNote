@@ -2,6 +2,8 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/apple-touch-icon.png'
 import { useNavigate } from 'react-router-dom';
+import './styles/Navbar.css';
+
 
 const Navbar = (props) => {
   let location = useLocation();
@@ -11,7 +13,7 @@ const Navbar = (props) => {
     navigate('/login');
   }
   return (
-    <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
       <div className="container-fluid">
         <img src={logo} alt="Logo" width="40" height="40" className="d-inline-block align-text-top me-2" />
         <Link className="navbar-brand" to="/">QuickNote</Link>
@@ -30,12 +32,12 @@ const Navbar = (props) => {
           {localStorage.getItem('token')
             ? (
               <form className="d-flex" role="search">
-                <button className='btn btn-primary mx-1' onClick={handleLogOut}>Logout</button>
+                <button className="btn nav-logout-btn mx-1" onClick={handleLogOut}>Logout</button>
               </form>
             ) : (
               <form className="d-flex" role="search">
-                <Link className='btn btn-primary mx-1' to='/login'>Login</Link>
-                <Link className='btn btn-primary mx-1' to='/signup'>Signup</Link>
+                <Link className="btn nav-login-btn mx-1" to="/login">Login</Link>
+                <Link className="btn nav-signup-btn mx-1" to="/signup">Signup</Link>
               </form>
             )
           }

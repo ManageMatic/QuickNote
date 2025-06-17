@@ -1,23 +1,22 @@
-import React from 'react'
+import React from 'react';
+import './styles/Alert.css';
 
-const Alert = (props) => {
-    function capitalize(word) {
-        if (word === "danger") {
-            word = "error";
-        }
+const Alert = ({ alert }) => {
+    const capitalize = (word) => {
+        if (word === 'danger') word = 'error';
         const lower = word.toLowerCase();
         return lower.charAt(0).toUpperCase() + lower.slice(1);
-    }
+    };
+
     return (
-        <div>
-            {props.alert && (
-                <div className={`alert alert-${props.alert.type} alert-dismissible fade show`} role="alert">
-                    <strong>{capitalize(props.alert.type)}</strong> {props.alert.msg}
-                    {/*<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>*/}
+        <div className="custom-alert-container">
+            {alert && (
+                <div className={`custom-alert ${alert.type}`}>
+                    <span><strong>{capitalize(alert.type)}:</strong> {alert.msg}</span>
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Alert
+export default Alert;

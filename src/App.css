@@ -1,0 +1,16 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background-color: #E0E0E0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #001F3F;
+    overflow-x: hidden;
+    height: 100%;
+}
+#root, .App {
+    background-color: #E0E0E0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
