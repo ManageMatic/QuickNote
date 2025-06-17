@@ -36,6 +36,7 @@ const Signup = (props) => {
     return (
         <div className="signup-container my-3">
             <h1 className='signup-title'>Signup for QuickNote</h1>
+            <p className='signup-subtitle'>Create an account to manage your notes</p>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
@@ -54,6 +55,7 @@ const Signup = (props) => {
                     <input type="password" className="form-control signup-input" id="cpassword" name="cpassword" onChange={onChange} minLength={5} required />
                 </div>
                 <button type="submit" className="btn btn-signup">Signup</button>
+                <p className="signup-footer">Already have an account? <a href="/login">Login</a></p>
             </form>
         </div>
     )

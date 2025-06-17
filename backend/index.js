@@ -1,6 +1,7 @@
 const connectToMongo = require('./db');
 const express = require('express');
 const cors = require('cors');
+//global.serverStartTime = Date.now();
 
 const app = express();
 const port = 5000;

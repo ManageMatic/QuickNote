@@ -9,6 +9,9 @@ const fetchuser = (req, res, next) => {
     }
     try {
         const data = jwt.verify(token, JWT_SECRET);
+        /*if (data.iat * 1000 < global.serverStartTime) {
+            return res.status(401).send({ error: "Token has expired, please login again" });
+        }*/
         req.user = data.user;
         next();
     } catch (error) {

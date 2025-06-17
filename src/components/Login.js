@@ -36,6 +36,7 @@ const Login = (props) => {
     return (
         <div className="login-container my-3">
             <h1 className="login-title">Login to QuickNote</h1>
+            <p className="login-subtitle">Manage and access your notes efficiently</p>
             <form onSubmit={handleSubmit} className="login-form">
                 <div className="form-group">
                     <label htmlFor="email" className="form-label">Email address</label>
@@ -61,6 +62,10 @@ const Login = (props) => {
                     />
                 </div>
                 <button type="submit" className="btn btn-login">Login</button>
+                <div className="login-footer">
+                    <p className="login-footer-text">Don't have an account? <a href="/signup" className="login-footer-link">Sign up</a></p>
+                    <p className="login-footer-text">Forget your password? <a href="/reset-password" className="login-footer-link">Reset it</a></p>
+                </div>
             </form>
         </div>
 
