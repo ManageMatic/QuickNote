@@ -9,13 +9,15 @@ const Notes = (props) => {
     const navigate = useNavigate();
     const { showAlert } = props;
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            getNotes();
-        } else {
-            navigate("/login");
-        }
-        // eslint-disable-next-line
-    }, [])
+        const fetchNotes = async () => {
+            const ok = await getNotes();
+            if (!ok) {
+                showAlert('Session expired. Please log in again.', 'danger');
+                navigate('/login');
+            }
+        };
+        fetchNotes();
+    }, [getNotes, navigate, showAlert]);
 
     const updateNote = (currentNote) => {
         ref.current.click()
@@ -77,12 +79,18 @@ const Notes = (props) => {
                 </div>
                 <div className="row my-3">
                     <h2>Your Notes!</h2>
-                    <div className='container'>
-                        {notes.length === 0 && 'No notes to display!'}
-                    </div>
-                    {notes.map((note) => {
-                        return <NoteItem key={note._id} showAlert={showAlert} updateNote={updateNote} note={note} />
-                    })}
+                    {!Array.isArray(notes) || notes.length === 0 ? (
+                        <div className="container">No notes to display!</div>
+                    ) : (
+                        notes.map(note => (
+                            <NoteItem
+                                key={note._id}
+                                note={note}
+                                updateNote={updateNote}
+                                showAlert={showAlert}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </>

@@ -6,27 +6,23 @@ const Login = (props) => {
 
     const [credentials, setCredentials] = React.useState({ email: "", password: "" });
     const navigate = useNavigate();
+    const { showAlert } = props;
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle login logic here
         const response = await fetch("http://localhost:5000/api/auth/login", {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email: e.target.email.value,
-                password: e.target.password.value
-            })
+            body: JSON.stringify(credentials)
         });
-        const json = await response.json();
-        if (json.success) {
-            // Save the auth token and redirect
-            localStorage.setItem('token', json.authToken);
-            props.showAlert("Logged in successfully", "success");
+        if (response.ok) {
+            showAlert("Logged in successfully", "success");
             navigate('/');
         } else {
-            props.showAlert("Invalid credentials", "danger");
+            showAlert("Invalid credentials", "danger");
         }
     }
 

@@ -1,4 +1,3 @@
-// App.js
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import NoteState from './context/notes/NoteState';

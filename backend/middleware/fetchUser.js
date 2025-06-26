@@ -1,22 +1,24 @@
-const JWT_SECRET = "shhhhh";
-const jwt = require('jsonwebtoken');
+// middleware/fetchuser.js
+const { verifyAccessToken } = require('../utils/token');
 
-const fetchuser = (req, res, next) => {
-    // Get the user from the jwt token and add id to req object
-    const token = req.header('auth-token');
+const fetchUser = (req, res, next) => {
+    /* 1. Get token */
+    const token =
+        req.cookies.accessToken ||                 // ✅ correct cookie name
+        req.header('Authorization')?.split(' ')[1] // optionally "Bearer <token>"
+
     if (!token) {
-        res.status(401).send({ error: "Please authenticate using a valid token" })
+        return res.status(401).json({ error: 'No access token' });
     }
-    try {
-        const data = jwt.verify(token, JWT_SECRET);
-        /*if (data.iat * 1000 < global.serverStartTime) {
-            return res.status(401).send({ error: "Token has expired, please login again" });
-        }*/
-        req.user = data.user;
-        next();
-    } catch (error) {
-        res.status(401).send({ error: "Please authenticate using a valid token" })
-    }
-}
 
-module.exports = fetchuser;
+    /* 2. Verify */
+    try {
+        const payload = verifyAccessToken(token);  // throws if invalid / expired
+        req.user = { id: payload.id };
+        next();
+    } catch (err) {
+        return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+};
+
+module.exports = fetchUser;

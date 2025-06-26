@@ -6,6 +6,7 @@
     justify-content: center;
     padding: 7rem;
     margin-top: 5rem;
+    max-height: 625px;
 }
 
 .login-title {

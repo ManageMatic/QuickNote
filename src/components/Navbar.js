@@ -5,12 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import './styles/Navbar.css';
 
 
-const Navbar = (props) => {
+const Navbar = ({ isAuthenticated, showAlert }) => {
   let location = useLocation();
   const navigate = useNavigate();
-  const handleLogOut = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const handleLogOut = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/logout", {
+        method: 'POST',
+        credentials: 'include',
+      })
+      if (response.ok) {
+        showAlert("Logged out successfully", "success");
+        navigate('/login');
+      } else {
+        showAlert("Failed to log out", "danger");
+      }
+    } catch (error) {
+      showAlert("An error occurred while logging out", "danger");
+    }
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -29,7 +41,7 @@ const Navbar = (props) => {
               <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
             </li>
           </ul>
-          {localStorage.getItem('token')
+          {isAuthenticated
             ? (
               <form className="d-flex" role="search">
                 <button className="btn nav-logout-btn mx-1" onClick={handleLogOut}>Logout</button>

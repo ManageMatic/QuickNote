@@ -1,54 +1,72 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Alert from './Alert';
 import Home from './Home';
 import About from './About';
 import Login from './Login';
 import Signup from './Signup';
+import { ensureAccess } from '../utils/refreshToken';
+
+const host = 'http://localhost:5000';
+const hideNavbarPaths = ['/login', '/signup'];
 
 const AppContent = ({ showAlert, alert }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const hideNavbarPaths = ['/login', '/signup'];
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) return;
+        // Skip check on /login or /signup
+        if (hideNavbarPaths.includes(location.pathname)) return;
 
+        let intervalId;
+
+        const verifySession = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/auth/getuser', {
+                const res = await fetch(`${host}/api/auth/getuser`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'auth-token': token,
-                    },
+                    credentials: 'include',
                 });
 
-                if (response.status === 401 || response.status === 403) {
-                    localStorage.removeItem('token');
-                    showAlert('Session expired. Please log in again.', 'danger');
-                    navigate('/login');
+                if (res.status === 401 || res.status === 403) {
+                    const ref = await fetch(`${host}/api/auth/refresh-token`, {
+                        method: 'POST',
+                        credentials: 'include',
+                    });
+
+                    if (!ref.ok) {
+                        showAlert('Session expired. Please log in again.', 'danger');
+                        setIsAuthenticated(false);
+                        navigate('/login');
+                        return;
+                    }
                 }
 
-                const data = await response.json();
-
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                showAlert('Failed to verify authentication. Please log in again.', 'danger');
-                localStorage.removeItem('token');
+                // Access token is valid (or refreshed successfully)
+                setIsAuthenticated(true);
+                ensureAccess();
+                intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
+            } catch (err) {
+                console.error('Auth check failed:', err);
+                showAlert('Failed to verify session.', 'danger');
+                setIsAuthenticated(false);
                 navigate('/login');
             }
         };
 
-        checkAuth();
-    }, []);
+        verifySession();
+        return () => clearInterval(intervalId);
+    }, [location.pathname, navigate, showAlert]);
 
     return (
         <>
-            {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
+            {!hideNavbarPaths.includes(location.pathname) && (
+                <Navbar isAuthenticated={isAuthenticated} showAlert={showAlert} />
+            )}
+
             <Alert alert={alert} />
+
             <div className="container">
                 <Routes>
                     <Route path="/" element={<Home showAlert={showAlert} />} />
