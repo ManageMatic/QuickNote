@@ -1,13 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import NoteContext from '../context/notes/NoteContext';
 import NoteItem from './NoteItem';
+import SearchBar from './SearchBar';
 import { useNavigate } from 'react-router-dom';
+import './styles/Notes.css';
 
 const Notes = (props) => {
     const context = useContext(NoteContext);
     const { notes, getNotes, editNote } = context;
+    const [query, setQuery] = useState('');
     const navigate = useNavigate();
     const { showAlert } = props;
+
     useEffect(() => {
         const fetchNotes = async () => {
             const ok = await getNotes();
@@ -20,26 +24,32 @@ const Notes = (props) => {
     }, [getNotes, navigate, showAlert]);
 
     const updateNote = (currentNote) => {
-        ref.current.click()
+        ref.current.click();
         setNote({ _id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag });
-    }
+    };
 
     const handleClick = (e) => {
-        // API call to update the note
         e.preventDefault();
         refClose.current.click();
         editNote(note._id, note.etitle, note.edescription, note.etag);
         setNote({ id: "", etitle: "", edescription: "", etag: "" });
         props.showAlert("Note updated successfully", "success");
-    }
+    };
 
     const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
-    }
+    };
 
     const ref = useRef(null);
     const refClose = useRef(null);
     const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "Default" });
+
+    // 🔍 Filter notes by search query
+    const filteredNotes = notes.filter(n =>
+        [n.title, n.description, n.tag].some(field =>
+            field.toLowerCase().includes(query.toLowerCase())
+        )
+    );
 
     return (
         <>
@@ -77,12 +87,15 @@ const Notes = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="row my-3">
-                    <h2>Your Notes!</h2>
-                    {!Array.isArray(notes) || notes.length === 0 ? (
+                <div className="row">
+                    <div className='notes-header'>
+                        <h1>Your Notes!</h1>
+                        <SearchBar query={query} setQuery={setQuery} />
+                    </div>
+                    {!Array.isArray(filteredNotes) || filteredNotes.length === 0 ? (
                         <div className="container">No notes to display!</div>
                     ) : (
-                        notes.map(note => (
+                        filteredNotes.map(note => (
                             <NoteItem
                                 key={note._id}
                                 note={note}
@@ -94,7 +107,7 @@ const Notes = (props) => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Notes
+export default Notes;

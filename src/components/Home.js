@@ -44,8 +44,14 @@ const Home = ({ showAlert }) => {
       <h1 className="container my-3">
         Welcome {user ? user.name : 'User'} to QuickNote
       </h1>
-      <AddNote showAlert={showAlert} />
-      <Notes showAlert={showAlert} />
+      <div className="dashboard">
+        <div className="dashboard-left">
+          <AddNote showAlert={showAlert} />
+        </div>
+        <div className="dashboard-right">
+          <Notes showAlert={showAlert} />
+        </div>
+      </div>
     </div>
   );
 };
