@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faEdit, faThumbtack, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faEdit, faThumbtack, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import NoteContext from '../context/notes/NoteContext';
@@ -8,8 +8,8 @@ import './styles/NoteItem.css';
 
 const NoteItem = (props) => {
     const context = useContext(NoteContext);
-    const { deleteNote, getNotes } = context;
-    const { note, updateNote, showAlert } = props;
+    const { getNotes } = context;
+    const { note, updateNote, moveToTrash, showAlert } = props;
 
     const togglePin = async (id) => {
         try {
@@ -68,11 +68,11 @@ const NoteItem = (props) => {
                             onClick={() => updateNote(note)}
                         />
                         <FontAwesomeIcon
-                            icon={faTrashCan}
+                            icon={faTrashAlt}
                             className="icon-delete mx-2"
                             onClick={() => {
-                                deleteNote(note._id);
-                                showAlert("Note deleted successfully", "success");
+                                moveToTrash(note._id);
+                                showAlert("Note moved to trash.", "success");
                             }}
                         />
                     </div>

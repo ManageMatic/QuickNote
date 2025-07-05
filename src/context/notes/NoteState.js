@@ -4,9 +4,11 @@ import NoteContext from './NoteContext';
 const host = 'http://localhost:5000';
 
 const NoteState = (props) => {
+    /* -------- State -------- */
     const [notes, setNotes] = useState([]);
+    const [trashedNotes, setTrashedNotes] = useState([]);
 
-    /* ---------- Add a Note ---------- */
+    /* -------- Add -------- */
     const addNote = async (title, description, tag) => {
         const res = await fetch(`${host}/api/notes/addnote`, {
             method: 'POST',
@@ -15,54 +17,41 @@ const NoteState = (props) => {
             body: JSON.stringify({ title, description, tag })
         });
         const note = await res.json();
-        setNotes((prev) => prev.concat(note));
+        setNotes(prev => prev.concat(note));
     };
 
-    /* ---------- Get All Notes ---------- */
+    /* -------- Fetch All (non‑trashed) -------- */
     const getNotes = useCallback(async () => {
         try {
             const res = await fetch(`${host}/api/notes/fetchallnotes`, {
                 method: 'GET',
                 credentials: 'include'
             });
-
             if (res.ok) {
                 setNotes(await res.json());
-                return true;                   // success
+                return true;
             }
-
-            // Try silent refresh once
+            /* silent refresh once */
             const refresh = await fetch(`${host}/api/auth/refresh-token`, {
                 method: 'POST',
                 credentials: 'include'
             });
-
             if (refresh.ok) {
                 const retry = await fetch(`${host}/api/notes/fetchallnotes`, {
                     method: 'GET',
                     credentials: 'include'
                 });
                 setNotes(await retry.json());
-                return true;                   // success after refresh
+                return true;
             }
-
-            return false; // refresh failed → caller should redirect
+            return false;
         } catch (err) {
             console.error(err);
             return false;
         }
     }, []);
 
-    /* ---------- Delete Note ---------- */
-    const deleteNote = async (id) => {
-        await fetch(`${host}/api/notes/deletenote/${id}`, {
-            method: 'DELETE',
-            credentials: 'include'
-        });
-        setNotes((prev) => prev.filter((n) => n._id !== id));
-    };
-
-    /* ---------- Edit Note ---------- */
+    /* -------- Edit -------- */
     const editNote = async (id, title, description, tag) => {
         await fetch(`${host}/api/notes/updatenote/${id}`, {
             method: 'PUT',
@@ -70,16 +59,69 @@ const NoteState = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, description, tag })
         });
-
-        setNotes((prev) =>
-            prev.map((n) =>
-                n._id === id ? { ...n, title, description, tag } : n
-            )
+        setNotes(prev =>
+            prev.map(n => (n._id === id ? { ...n, title, description, tag } : n))
         );
     };
 
+    /* -------- Move to Trash (soft‑delete) -------- */
+    const moveToTrash = async (id) => {
+        const res = await fetch(`${host}/api/notes/trash/${id}`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+        if (res.ok) {
+            setNotes(prev => prev.filter(n => n._id !== id));
+            const trashed = await res.json();           // returns the note or msg
+            setTrashedNotes(prev => prev.concat(trashed));
+        }
+    };
+
+    /* -------- Restore from Trash -------- */
+    const restoreNote = async (id) => {
+        const res = await fetch(`${host}/api/notes/restore/${id}`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const restored = await res.json();
+            setTrashedNotes(prev => prev.filter(n => n._id !== id));
+            setNotes(prev => prev.concat(restored));
+        }
+    };
+
+    /* -------- Permanently delete -------- */
+    const deleteNoteForever = async (id) => {
+        const res = await fetch(`${host}/api/notes/deletenote/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        if (res.ok) {
+            setTrashedNotes(prev => prev.filter(n => n._id !== id));
+        }
+    };
+
+    /* -------- Fetch all trashed -------- */
+    const getTrashedNotes = async () => {
+        try {
+            const res = await fetch(`${host}/api/notes/trash`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                setTrashedNotes(await res.json());
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    };
+
     return (
-        <NoteContext.Provider value={{ notes, addNote, getNotes, deleteNote, editNote }}>
+        <NoteContext.Provider
+            value={{ notes, addNote, getNotes, editNote, moveToTrash, trashedNotes, getTrashedNotes, restoreNote, deleteNoteForever }}>
             {props.children}
         </NoteContext.Provider>
     );

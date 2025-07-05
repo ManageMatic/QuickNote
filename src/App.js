@@ -21,11 +21,12 @@ function App() {
     <div className="App">
       <NoteState>
         <BrowserRouter>
-          <AppContent showAlert={showAlert} alert={alert} />
+          <div className="main-content">
+            <AppContent showAlert={showAlert} alert={alert} />
+          </div>
         </BrowserRouter>
       </NoteState>
       <footer className="about-footer">
-        <hr />
         <p>© {new Date().getFullYear()} QuickNote. All rights reserved.</p>
       </footer>
     </div>

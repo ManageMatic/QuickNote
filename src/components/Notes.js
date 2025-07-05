@@ -7,7 +7,7 @@ import './styles/Notes.css';
 
 const Notes = (props) => {
     const context = useContext(NoteContext);
-    const { notes, getNotes, editNote } = context;
+    const { notes, getNotes, editNote, moveToTrash } = context;
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
     const { showAlert } = props;
@@ -57,10 +57,13 @@ const Notes = (props) => {
         });
 
     const filteredNotes = sortedNotes.filter(note =>
-        note.title.toLowerCase().includes(query.toLowerCase()) ||
-        note.description.toLowerCase().includes(query.toLowerCase()) ||
-        note.tag.toLowerCase().includes(query.toLowerCase())
+        (note.title || '').toLowerCase().includes(query.toLowerCase()) ||
+        (note.description || '').toLowerCase().includes(query.toLowerCase())
     );
+
+    const visibleNotes = Array.isArray(filteredNotes)
+        ? filteredNotes.filter(note => !note.trashed)
+        : [];
 
     return (
         <>
@@ -83,7 +86,7 @@ const Notes = (props) => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="edescription" className="form-label">Description</label>
-                                        <input type="text" className="form-control" id="edescription" name='edescription' value={note.edescription} onChange={onChange} />
+                                        <textarea type="text" className="form-control" id="edescription" name='edescription' value={note.edescription} onChange={onChange} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="etag" className="form-label">Tag</label>
@@ -114,14 +117,15 @@ const Notes = (props) => {
                             </select>
                         </div>
                     </div>
-                    {!Array.isArray(filteredNotes) || filteredNotes.length === 0 ? (
+                    {visibleNotes.length === 0 ? (
                         <div className="container">No notes to display!</div>
                     ) : (
-                        filteredNotes.map(note => (
+                        visibleNotes.map(note => (
                             <NoteItem
                                 note={note}
                                 key={note._id}
                                 updateNote={updateNote}
+                                moveToTrash={moveToTrash}
                                 showAlert={showAlert}
                             />
                         ))

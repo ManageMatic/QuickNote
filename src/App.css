@@ -5,21 +5,26 @@ body {
     background-color: #E0E0E0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #001F3F;
-    height: auto;
+    min-height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .App {
-    flex: 1;
-    background-color: #E0E0E0;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
 }
 
 .about-footer {
     text-align: center;
     font-size: 0.9rem;
     color: #333;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-top: 1px solid #ccc;
 }

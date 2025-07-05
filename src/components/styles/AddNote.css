@@ -43,3 +43,7 @@
     background-color: #FFD700;
     color: #001F3F;
 }
+
+textarea.form-control {
+    height: 100%;
+}

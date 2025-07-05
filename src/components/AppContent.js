@@ -7,6 +7,7 @@ import About from './About';
 import Login from './Login';
 import Signup from './Signup';
 import { ensureAccess } from '../utils/refreshToken';
+import Trash from './Trash';
 
 const host = 'http://localhost:5000';
 const hideNavbarPaths = ['/login', '/signup'];
@@ -70,6 +71,7 @@ const AppContent = ({ showAlert, alert }) => {
             <div className="container">
                 <Routes>
                     <Route path="/" element={<Home showAlert={showAlert} />} />
+                    <Route path="/trash" element={<Trash showAlert={showAlert} />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login showAlert={showAlert} />} />
                     <Route path="/signup" element={<Signup showAlert={showAlert} />} />

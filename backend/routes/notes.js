@@ -116,4 +116,52 @@ router.put('/togglefavorite/:id', fetchUser, async (req, res) => {
     }
 });
 
+// Route 7: Move notes in the trash using: PUT "/api/notes/trash/:id". logged in user required
+router.put('/trash/:id', fetchUser, async (req, res) => {
+    try {
+        const note = await Notes.findById(req.params.id);
+        if (!note) return res.status(404).send("Not Found");
+        if (note.user.toString() !== req.user.id) return res.status(401).send("Not Allowed");
+
+        note.trashed = true;
+        await note.save();
+
+        res.json({ success: true, message: "Note moved to trash." });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// Route 8: Restore notes from trash using: PUT "/api/notes/restore/:id". logged in user required
+router.put('/restore/:id', fetchUser, async (req, res) => {
+    try {
+        const note = await Notes.findById(req.params.id);
+        if (!note) return res.status(404).send("Not Found");
+
+        if (note.user.toString() !== req.user.id) {
+            return res.status(401).send("Not Allowed");
+        }
+
+        note.trashed = false;
+        await note.save();
+
+        res.json({ success: true, message: "Note restored" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// Route 9: Fetch only trashed notes using: GET "/api/notes/trash". logged in user required
+router.get('/trash', fetchUser, async (req, res) => {
+    try {
+        const trashedNotes = await Notes.find({ user: req.user.id, trashed: true });
+        res.json(trashedNotes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 module.exports = router
