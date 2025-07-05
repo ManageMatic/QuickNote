@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import NoteContext from './NoteContext';
 
 const host = 'http://localhost:5000';
@@ -19,7 +19,7 @@ const NoteState = (props) => {
     };
 
     /* ---------- Get All Notes ---------- */
-    const getNotes = async () => {
+    const getNotes = useCallback(async () => {
         try {
             const res = await fetch(`${host}/api/notes/fetchallnotes`, {
                 method: 'GET',
@@ -51,7 +51,7 @@ const NoteState = (props) => {
             console.error(err);
             return false;
         }
-    };
+    }, []);
 
     /* ---------- Delete Note ---------- */
     const deleteNote = async (id) => {

@@ -2,24 +2,32 @@ const mongoose = require('mongoose');
 const { type } = require('os');
 const { Schema } = mongoose;
 
-const NoteSchema = new Schema ({
-    user:{
+const NoteSchema = new Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    title:{
+    title: {
         type: String,
         required: true
     },
-    description:{
+    description: {
         type: String,
         required: true,
     },
-    tag:{
+    tag: {
         type: String,
         default: "General"
     },
-    date:{
+    pinned: {
+        type: Boolean,
+        default: false
+    },
+    favorite: {
+        type: Boolean,
+        default: false
+    },
+    date: {
         type: Date,
         default: Date.now
     }

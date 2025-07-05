@@ -24,18 +24,45 @@
 
 .notes-header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.notes-header input {
+.notes-title {
+    color: #001F3F;
+    margin-bottom: 0;
+}
+
+.notes-tools {
+    display: flex;
+    gap: 0.5rem;
     width: 100%;
+}
+
+.notes-tools input {
+    flex: 1;
     border: 1px solid #001F3F;
     border-radius: 8px;
     font-size: 0.95rem;
     color: #001F3F;
-    margin-right: 4rem;
+    background-color: white;
+}
+
+.notes-tools select {
+    flex: 1;
+    padding: 6px 12px;
+    height: 53%;
+    margin-top: 1rem;
+    border: 1px solid #001F3F;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #001F3F;
+    background-color: white;
+}
+
+/* Optional: Match form-control input styling if used */
+.notes-sort-select {
+    max-width: 150px;
 }
 
 @media (max-width: 768px) {
@@ -57,5 +84,9 @@
 
     .notes-header input {
         width: 100%;
+    }
+
+    .notes-tools {
+        flex-direction: column;
     }
 }

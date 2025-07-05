@@ -43,12 +43,23 @@ const Notes = (props) => {
     const ref = useRef(null);
     const refClose = useRef(null);
     const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "Default" });
+    const [sortType, setSortType] = useState('date');
 
-    // 🔍 Filter notes by search query
-    const filteredNotes = notes.filter(n =>
-        [n.title, n.description, n.tag].some(field =>
-            field.toLowerCase().includes(query.toLowerCase())
-        )
+    const sortedNotes = [...notes]
+        .sort((a, b) => {
+            // Always sort pinned notes to top first
+            if (a.pinned !== b.pinned) return b.pinned - a.pinned;
+
+            // Then apply selected sorting
+            if (sortType === 'title') return a.title.localeCompare(b.title);
+            if (sortType === 'tag') return a.tag.localeCompare(b.tag);
+            return new Date(b.date) - new Date(a.date); // default: date
+        });
+
+    const filteredNotes = sortedNotes.filter(note =>
+        note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.description.toLowerCase().includes(query.toLowerCase()) ||
+        note.tag.toLowerCase().includes(query.toLowerCase())
     );
 
     return (
@@ -88,17 +99,28 @@ const Notes = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className='notes-header'>
-                        <h1>Your Notes!</h1>
-                        <SearchBar query={query} setQuery={setQuery} />
+                    <div className="notes-header mb-3">
+                        <h1 className="notes-title">Your Notes!</h1>
+                        <div className="notes-tools">
+                            <SearchBar query={query} setQuery={setQuery} />
+                            <select
+                                value={sortType}
+                                onChange={(e) => setSortType(e.target.value)}
+                                className="notes-sort-select"
+                            >
+                                <option value="date">Sort by Date</option>
+                                <option value="title">Sort by Title</option>
+                                <option value="tag">Sort by Tag</option>
+                            </select>
+                        </div>
                     </div>
                     {!Array.isArray(filteredNotes) || filteredNotes.length === 0 ? (
                         <div className="container">No notes to display!</div>
                     ) : (
                         filteredNotes.map(note => (
                             <NoteItem
-                                key={note._id}
                                 note={note}
+                                key={note._id}
                                 updateNote={updateNote}
                                 showAlert={showAlert}
                             />

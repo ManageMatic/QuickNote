@@ -77,4 +77,43 @@ router.delete('/deletenote/:id', fetchUser, async (req, res) => {
     }
 })
 
+// Route 5: Toggle pin status of a note using: PUT "api/notes/togglepin/:id". logged in user required
+router.put('/togglepin/:id', fetchUser, async (req, res) => {
+    try {
+        let note = await Notes.findById(req.params.id);  // use let here
+        if (!note) return res.status(404).send("Not Found");
+
+        if (note.user.toString() !== req.user.id)
+            return res.status(401).send("Not Allowed");
+
+        note.pinned = !note.pinned;
+        await note.save();
+
+        res.json({ success: true, pinned: note.pinned });
+    } catch (error) {
+        console.error("Toggle Pin Error:", error.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// Route 6: Toggle favorite status of a note using: PUT "api/notes/togglefavorite/:id". logged in user required
+router.put('/togglefavorite/:id', fetchUser, async (req, res) => {
+    try {
+        let note = await Notes.findById(req.params.id);  // use let here
+        if (!note) return res.status(404).send("Not Found");
+
+        if (note.user.toString() !== req.user.id)
+            return res.status(401).send("Not Allowed");
+
+        note.favorite = !note.favorite;
+        await note.save();
+
+        res.json({ success: true, favorite: note.favorite });
+    } catch (error) {
+        console.error("Toggle Favorite Error:", error.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 module.exports = router
