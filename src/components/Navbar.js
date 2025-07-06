@@ -1,29 +1,13 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/apple-touch-icon.png'
-import { useNavigate } from 'react-router-dom';
 import './styles/Navbar.css';
+import UserAvatar from './UserAvatar';
 
 
 const Navbar = ({ isAuthenticated, showAlert }) => {
   let location = useLocation();
-  const navigate = useNavigate();
-  const handleLogOut = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
-        method: 'POST',
-        credentials: 'include',
-      })
-      if (response.ok) {
-        showAlert("Logged out successfully", "success");
-        navigate('/login');
-      } else {
-        showAlert("Failed to log out", "danger");
-      }
-    } catch (error) {
-      showAlert("An error occurred while logging out", "danger");
-    }
-  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
       <div className="container-fluid">
@@ -47,7 +31,8 @@ const Navbar = ({ isAuthenticated, showAlert }) => {
           {isAuthenticated
             ? (
               <form className="d-flex" role="search">
-                <button className="btn nav-logout-btn mx-1" onClick={handleLogOut}>Logout</button>
+                {/* <button className="btn nav-logout-btn mx-1" onClick={handleLogOut}>Logout</button> */}
+                <UserAvatar showAlert={showAlert} />
               </form>
             ) : (
               <form className="d-flex" role="search">

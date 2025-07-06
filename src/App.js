@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import NoteState from './context/notes/NoteState';
 import React, { useState } from 'react';
 import AppContent from './components/AppContent';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {

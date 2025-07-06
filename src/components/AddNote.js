@@ -35,7 +35,7 @@ const AddNote = (props) => {
                     <input type="text" className="form-control" id="tag" name='tag' value={note.tag} onChange={onChange} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="reminder" className="form-label">Reminder</label>
+                    <label htmlFor="reminder" className="form-label">Set Reminder</label>
                     <input type="datetime-local" className="form-control" id="reminder" name='reminder' value={note.reminder} onChange={onChange} />
                 </div>
                 <button type="submit" disabled={note.title.length === 0 || note.description.length === 0} className="btn btn-primary" onClick={handleClick}>Add Note</button>
