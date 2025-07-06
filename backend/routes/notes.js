@@ -17,10 +17,10 @@ router.get('/fetchallnotes', fetchUser, async (req, res) => {
 
 // Route 2: Add a new note using: POST "api/notes/addnote". logged in user required
 router.post('/addnote', fetchUser, async (req, res) => {
-    const { title, description, tag } = req.body;
+    const { title, description, tag, reminder } = req.body;
     try {
         const note = new Notes({
-            title, description, tag, user: req.user.id
+            title, description, tag, reminder, user: req.user.id
         })
         const savedNote = await note.save()
         res.json(savedNote)

@@ -34,7 +34,11 @@ const NoteSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    reminder: {
+        type: Date,
+        default: null
+    },
 });
 
 module.exports = mongoose.model('notes', NoteSchema)

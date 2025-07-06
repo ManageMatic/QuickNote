@@ -6,12 +6,12 @@ const AddNote = (props) => {
     const context = useContext(NoteContext);
     const { addNote } = context;
 
-    const [note, setNote] = useState({ title: "", description: "", tag: "" });
+    const [note, setNote] = useState({ title: "", description: "", tag: "", reminder: "" });
 
     const handleClick = (e) => {
         e.preventDefault();
-        addNote(note.title, note.description, note.tag);
-        setNote({ title: "", description: "", tag: "" });
+        addNote(note.title, note.description, note.tag, note.reminder);
+        setNote({ title: "", description: "", tag: "", reminder: "" });
         props.showAlert("Note added successfully", "success");
     }
 
@@ -34,7 +34,11 @@ const AddNote = (props) => {
                     <label htmlFor="tag" className="form-label">Tag</label>
                     <input type="text" className="form-control" id="tag" name='tag' value={note.tag} onChange={onChange} />
                 </div>
-                <button type="submit" disabled={note.title.length===0 || note.description.length===0} className="btn btn-primary" onClick={handleClick}>Add Note</button>
+                <div className="mb-3">
+                    <label htmlFor="reminder" className="form-label">Reminder</label>
+                    <input type="datetime-local" className="form-control" id="reminder" name='reminder' value={note.reminder} onChange={onChange} />
+                </div>
+                <button type="submit" disabled={note.title.length === 0 || note.description.length === 0} className="btn btn-primary" onClick={handleClick}>Add Note</button>
             </form>
         </div>
     )

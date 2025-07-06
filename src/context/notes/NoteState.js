@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import NoteContext from './NoteContext';
+import { toast } from 'react-toastify';
 
 const host = 'http://localhost:5000';
 
@@ -9,12 +10,12 @@ const NoteState = (props) => {
     const [trashedNotes, setTrashedNotes] = useState([]);
 
     /* -------- Add -------- */
-    const addNote = async (title, description, tag) => {
+    const addNote = async (title, description, tag, reminder) => {
         const res = await fetch(`${host}/api/notes/addnote`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, description, tag })
+            body: JSON.stringify({ title, description, tag, reminder })
         });
         const note = await res.json();
         setNotes(prev => prev.concat(note));
@@ -23,32 +24,61 @@ const NoteState = (props) => {
     /* -------- Fetch All (non‑trashed) -------- */
     const getNotes = useCallback(async () => {
         try {
-            const res = await fetch(`${host}/api/notes/fetchallnotes`, {
-                method: 'GET',
-                credentials: 'include'
-            });
-            if (res.ok) {
-                setNotes(await res.json());
+            const fetchAll = async () => {
+                const res = await fetch(`${host}/api/notes/fetchallnotes`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                if (!res.ok) return null;
+
+                const list = await res.json();
+                setNotes(list);
+                notesRef.current = list; // store in ref for interval checking
                 return true;
-            }
-            /* silent refresh once */
+            };
+
+            // First attempt
+            if (await fetchAll()) return true;
+
+            // Silent refresh
             const refresh = await fetch(`${host}/api/auth/refresh-token`, {
                 method: 'POST',
-                credentials: 'include'
+                credentials: 'include',
             });
-            if (refresh.ok) {
-                const retry = await fetch(`${host}/api/notes/fetchallnotes`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                setNotes(await retry.json());
-                return true;
-            }
-            return false;
+            if (!refresh.ok) return false;
+
+            return await fetchAll();
         } catch (err) {
             console.error(err);
             return false;
         }
+    }, []);
+
+    const notesRef = useRef([]);
+    const notified = useRef(new Set());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = new Date();
+            notesRef.current.forEach(note => {
+                if (
+                    note.reminder &&
+                    !note.trashed &&
+                    !notified.current.has(note._id)
+                ) {
+                    const diff = new Date(note.reminder) - now;
+                    if (diff >= 0 && diff < 60000) {
+                        toast.info(`Reminder: ${note.title}`, {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            closeOnClick: true,
+                        });
+                        notified.current.add(note._id);
+                    }
+                }
+            });
+        }, 30000); // checks every 30 seconds
+        return () => clearInterval(interval);
     }, []);
 
     /* -------- Edit -------- */

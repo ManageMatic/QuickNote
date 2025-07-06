@@ -39,7 +39,7 @@ const Trash = ({ showAlert }) => {
             ) : (
                 <div className="row">
                     {trashedNotes.map(note => (
-                        <div className="col-md-3" key={note._id}>
+                        <div className="col-md-3" key={`trash-${note._id}`}>
                             <div className="custom-card my-3">
                                 <div className="card-body">
                                     <h5 className="card-title note-title">{note.title}</h5>
