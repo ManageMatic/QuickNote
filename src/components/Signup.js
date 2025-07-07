@@ -5,10 +5,11 @@ import './styles/Signup.css';
 const Signup = (props) => {
     const [credentials, setCredentials] = React.useState({ name: "", email: "", password: "", cpassword: "" });
     const navigate = useNavigate();
+    const host = "http://localhost:5000"
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle signup logic here
-        const response = await fetch("http://localhost:5000/api/auth/createuser", {
+        const response = await fetch(`${host}/api/auth/createuser`, {
             method: 'POST',
             credentials: 'include',
             headers: {

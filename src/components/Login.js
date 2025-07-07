@@ -7,10 +7,11 @@ const Login = (props) => {
     const [credentials, setCredentials] = React.useState({ email: "", password: "" });
     const navigate = useNavigate();
     const { showAlert } = props;
+    const host = "http://localhost:5000"
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle login logic here
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {

@@ -17,7 +17,7 @@
 .signup-container form {
     width: 100%;
     max-width: 400px;
-    background-color: #CEF4EB;
+    background-color: #ffffff;
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -78,4 +78,14 @@
 /* Optional: Hide vertical scroll globally */
 body {
     overflow-y: hidden;
+}
+
+@media (max-width: 768px) {
+    .signup-container {
+        padding: 1rem;
+    }
+
+    .signup-container.my-3{
+        margin-top: 6rem !important;
+    }
 }
