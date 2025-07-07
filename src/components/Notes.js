@@ -67,7 +67,7 @@ const Notes = (props) => {
 
     return (
         <>
-            <div className="container my-3">
+            <div className="display-seciton">
                 <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Launch demo modal
                 </button>
@@ -101,7 +101,7 @@ const Notes = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="row">
+                <div className="notes-container row">
                     <div className="notes-header mb-3">
                         <h1 className="notes-title">Your Notes!</h1>
                         <div className="notes-tools">
@@ -117,19 +117,21 @@ const Notes = (props) => {
                             </select>
                         </div>
                     </div>
-                    {visibleNotes.length === 0 ? (
-                        <div className="container">No notes to display!</div>
-                    ) : (
-                        visibleNotes.map(note => (
-                            <NoteItem
-                                note={note}
-                                key={note._id}
-                                updateNote={updateNote}
-                                moveToTrash={moveToTrash}
-                                showAlert={showAlert}
-                            />
-                        ))
-                    )}
+                    <div className="notes-scrollable">
+                        {visibleNotes.length === 0 ? (
+                            <div className="container">No notes to display!</div>
+                        ) : (
+                            visibleNotes.map(note => (
+                                <NoteItem
+                                    note={note}
+                                    key={note._id}
+                                    updateNote={updateNote}
+                                    moveToTrash={moveToTrash}
+                                    showAlert={showAlert}
+                                />
+                            ))
+                        )}
+                    </div>
                 </div>
             </div>
         </>

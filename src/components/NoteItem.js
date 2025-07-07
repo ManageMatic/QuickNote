@@ -10,16 +10,17 @@ const NoteItem = (props) => {
     const context = useContext(NoteContext);
     const { getNotes } = context;
     const { note, updateNote, moveToTrash, showAlert } = props;
+    const host = 'http://localhost:5000'
 
     const togglePin = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/notes/togglepin/${id}`, {
+            const response = await fetch(`${host}/api/notes/togglepin/${id}`, {
                 method: 'PUT',
                 credentials: 'include',
             });
             if (response.ok) {
                 getNotes(); // Refresh notes after toggling pin
-                showAlert("Note pin status toggled successfully", "success");
+                showAlert(`${!note.pinned ? 'Note pinned.' : 'Note unpinned.'}`, "success");
             }
         } catch (error) {
             console.error("Error toggling pin:", error);
@@ -29,13 +30,13 @@ const NoteItem = (props) => {
 
     const toggleFavorite = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/notes/togglefavorite/${id}`, {
+            const response = await fetch(`${host}/api/notes/togglefavorite/${id}`, {
                 method: 'PUT',
                 credentials: 'include',
             });
             if (response.ok) {
                 getNotes(); // Refresh notes after toggling favorite
-                showAlert("Note favorite status toggled successfully", "success");
+                showAlert(`${!note.favorite ? 'Add to favorite.' : 'Remove from favorite.'}`, "success");
             }
         } catch (error) {
             console.error("Error toggling favorite:", error);
@@ -44,7 +45,7 @@ const NoteItem = (props) => {
     }
     return (
         <div className="col-md-3">
-            <div className="custom-card my-3">
+            <div className="notes-card my-3">
                 <div className="card-body">
                     <h5 className="card-title note-title">{note.title}</h5>
                     <p className="card-text note-description">{note.description}</p>
@@ -54,7 +55,7 @@ const NoteItem = (props) => {
                     <div className="d-flex justify-content-end">
                         <FontAwesomeIcon
                             icon={faThumbtack}
-                            className={`icon-pin mx-2 ${note.pinned ? 'text-dark' : 'text-muted'}`}
+                            className={`icon-pin mx-2 ${note.pinned ? 'text-dark' : ''}`}
                             onClick={() => togglePin(note._id)}
                         />
                         <FontAwesomeIcon

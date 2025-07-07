@@ -3,11 +3,6 @@
     display: flex;
     flex-direction: column;
     color: #001f3f;
-    border-radius: 12px;
-    margin-bottom: 40px;
-    max-width: 1200px;
-    max-height: 46rem;
-    margin: 0 auto;
 }
 
 .about-title {
@@ -38,7 +33,7 @@
 }
 
 .counter-box {
-    background-color: #CEF4EB;
+    background-color: #ffffff;
     padding: 20px 30px;
     border-radius: 16px;
     text-align: center;

@@ -2,7 +2,7 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #E0E0E0;
+    background: linear-gradient(135deg, #b1ffed, #7ae2ff);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #001F3F;
     min-height: 100vh;
@@ -25,6 +25,5 @@ body {
     font-size: 0.9rem;
     color: #333;
     padding: 10px;
-    background-color: #e0e0e0;
-    border-top: 1px solid #ccc;
+    border-top: 0.01rem solid #001F3F;
 }

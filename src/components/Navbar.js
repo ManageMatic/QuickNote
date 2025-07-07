@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/apple-touch-icon.png'
 import './styles/Navbar.css';

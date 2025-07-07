@@ -1,28 +1,5 @@
-.dashboard {
-    display: flex;
-    gap: 1rem;
-    align-items: stretch;
-}
-
-.dashboard-left {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 50%;
-}
-
-.dashboard-right {
-    flex: 1 1 50%;
-    max-height: calc(103vh - 220px);
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.dashboard-right::-webkit-scrollbar {
-    display: none;
-}
-
 .notes-header {
+    position: sticky;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -37,27 +14,34 @@
     display: flex;
     gap: 0.5rem;
     width: 100%;
-}
-
-.notes-tools input {
-    flex: 1;
-    border: 1px solid #001F3F;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    color: #001F3F;
-    background-color: white;
+    margin-top: 0.5rem;
 }
 
 .notes-tools select {
     flex: 1;
-    padding: 6px 12px;
-    height: 53%;
+    height: 60%;
     margin-top: 1rem;
-    border: 1px solid #001F3F;
+    border: 1px solid #aaa;
     border-radius: 8px;
     font-size: 0.95rem;
     color: #001F3F;
-    background-color: white;
+    background-color: #f9f9f9;
+    width: 100%;
+    padding: 12px;
+}
+
+.notes-scrollable {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-height: calc(74vh - 220px);
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.notes-scrollable::-webkit-scrollbar {
+    display: none;
 }
 
 /* Optional: Match form-control input styling if used */

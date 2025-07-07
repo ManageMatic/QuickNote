@@ -1,11 +1,8 @@
-.container.my-3 {
-    background-color: #CEF4EB;
-    border-radius: 12px;
+.notes-container {
     padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.container.my-3 h1 {
+.notes-container h1 {
     color: #001F3F;
     margin-bottom: 20px;
 }
@@ -15,19 +12,22 @@
     font-weight: 500;
 }
 
-.form-control {
-    border: 1px solid #001F3F;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.95rem;
-    height: 36px;
-    color: #001F3F;
-}
-
 .form-control:focus {
     border-color: #A8D5E2;
     outline: none;
     box-shadow: 0 0 0 2px rgba(168, 213, 226, 0.4);
+}
+
+input[type="text"],
+textarea,
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
 }
 
 .btn.btn-primary {

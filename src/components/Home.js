@@ -1,5 +1,6 @@
 import AddNote from './AddNote';
 import Notes from './Notes';
+import './styles/Home.css'
 
 const Home = ({ showAlert }) => {
 

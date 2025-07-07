@@ -21,18 +21,18 @@
 }
 
 .custom-alert.success {
-    background-color: #CEF4EB;
+    background-color: #00ffc3;
     color: #001F3F;
     border-left: 6px solid #052560;
 }
 
 .custom-alert.warning {
-    background-color: #FFF3CD;
+    background-color: #ffc400;
     color: #856404;
     border-left: 6px solid #FFC107;
 }
 .custom-alert.error {
-    background-color: #FFDAB9;
+    background-color: #ff7700;
     color: #5a0000;
     border-left: 6px solid #ff4d4d;
 }

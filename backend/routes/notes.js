@@ -100,7 +100,7 @@ router.put('/togglepin/:id', fetchUser, async (req, res) => {
 // Route 6: Toggle favorite status of a note using: PUT "api/notes/togglefavorite/:id". logged in user required
 router.put('/togglefavorite/:id', fetchUser, async (req, res) => {
     try {
-        let note = await Notes.findById(req.params.id);  // use let here
+        let note = await Notes.findById(req.params.id);
         if (!note) return res.status(404).send("Not Found");
 
         if (note.user.toString() !== req.user.id)
