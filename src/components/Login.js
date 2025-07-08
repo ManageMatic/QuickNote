@@ -1,16 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import './styles/Login.css';
+import loginIllustration from '../assets/login-illustration.svg';
 
 const Login = (props) => {
-
     const [credentials, setCredentials] = React.useState({ email: "", password: "" });
     const navigate = useNavigate();
     const { showAlert } = props;
-    const host = "http://localhost:5000"
+    const host = "http://localhost:5000";
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
         const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST',
             credentials: 'include',
@@ -30,43 +30,35 @@ const Login = (props) => {
     const onchange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
-    return (
-        <div className="login-container my-3">
-            <h1 className="login-title">Login to QuickNote</h1>
-            <p className="login-subtitle">Manage and access your notes efficiently</p>
-            <form onSubmit={handleSubmit} className="login-form">
-                <div className="form-group">
-                    <label htmlFor="email" className="form-label">Email address</label>
-                    <input
-                        type="email"
-                        className="form-control login-input"
-                        id="email"
-                        name="email"
-                        value={credentials.email}
-                        onChange={onchange}
-                        aria-describedby="emailHelp"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password" className="form-label">Password</label>
-                    <input
-                        type="password"
-                        className="form-control login-input"
-                        id="password"
-                        name="password"
-                        value={credentials.password}
-                        onChange={onchange}
-                    />
-                </div>
-                <button type="submit" className="btn btn-login">Login</button>
-                <div className="login-footer">
-                    <p className="login-footer-text">Don't have an account? <a href="/signup" className="login-footer-link">Sign up</a></p>
-                    <p className="login-footer-text">Forget your password? <a href="/reset-password" className="login-footer-link">Reset it</a></p>
-                </div>
-            </form>
-        </div>
 
+    return (
+        <div className="login-main">
+            <div className="login-box">
+                <div className="login-form-section">
+                    <h2 className="login-title">Login to <span className="brand-color">QuickNote</span></h2>
+                    <p className="login-subtitle">Manage your notes with ease</p>
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <div className="form-group">
+                            <label htmlFor="email" className="form-label">Email address</label>
+                            <input type="email" id="email" name="email" className="login-input" value={credentials.email} onChange={onchange} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input type="password" id="password" name="password" className="login-input" value={credentials.password} onChange={onchange} />
+                        </div>
+                        <button type="submit" className="btn-login">Login</button>
+                        <div className="login-footer">
+                            <p>Don't have an account? <a href="/signup">Sign up</a></p>
+                            <p>Forgot password? <a href="/reset-password">Reset it</a></p>
+                        </div>
+                    </form>
+                </div>
+                <div className="login-image-section">
+                    <img src={loginIllustration} alt="Login" className="login-image" />
+                </div>
+            </div>
+        </div>
     )
 }
 
-export default Login
+export default Login;
