@@ -76,7 +76,7 @@ const UserAvatar = (props) => {
 
     const handleLogOut = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/auth/logout", {
+            const response = await fetch(`${host}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             })
