@@ -15,6 +15,11 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    tempEmail: String,
+    emailVerificationCode: String,
+    emailVerificationExpires: Date,
+    resetCode: String,
+    resetCodeExpires: Date,
     date: {
         type: Date,
         default: () => {
@@ -25,5 +30,5 @@ const UserSchema = new Schema({
     }
 });
 
-const User = mongoose.model('user', UserSchema)
-module.exports = User
+const User = mongoose.model('user', UserSchema);
+module.exports = User;

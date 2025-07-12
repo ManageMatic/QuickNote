@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles/Login.css';
 import loginIllustration from '../assets/login-illustration.svg';
 
@@ -48,8 +48,8 @@ const Login = (props) => {
                         </div>
                         <button type="submit" className="btn-login">Login</button>
                         <div className="login-footer">
-                            <p>Don't have an account? <a href="/signup">Sign up</a></p>
-                            <p>Forgot password? <a href="/reset-password">Reset it</a></p>
+                            <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+                            <p>Forgot password? <Link to="/forgot-password">Reset it</Link></p>
                         </div>
                     </form>
                 </div>

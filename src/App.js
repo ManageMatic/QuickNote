@@ -28,7 +28,7 @@ function App() {
 
 function MainWrapper({ showAlert, alert }) {
   const location = useLocation();
-  const hideFooter = location.pathname === '/login' || location.pathname === '/signup';
+  const hideFooter = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgot-password';
 
   return (
     <>

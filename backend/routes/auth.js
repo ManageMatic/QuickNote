@@ -6,6 +6,8 @@ const User = require('../models/User');
 const fetchUser = require('../middleware/fetchUser');
 const { body, validationResult } = require('express-validator');
 const { issueAccessToken, issueRefreshToken, verifyRefreshToken } = require('../utils/token');
+const sendEmailVerification = require('../utils/sendEmail');
+const SignupVerification = require('../models/SignupVerification');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -154,6 +156,126 @@ router.post('/logout', (_req, res) => {
         .clearCookie('accessToken', { path: '/', sameSite: 'lax' })
         .clearCookie('refreshToken', { path: '/', sameSite: 'lax' })
         .json({ success: true });
+});
+
+// Route 6: send signup code for verify email using: POST "api/auth/send-signup-code"
+router.post('/send-signup-code', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) return res.status(400).json({ error: 'Email is required' });
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) return res.status(400).json({ error: 'Email already exists' });
+
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+        await SignupVerification.findOneAndUpdate(
+            { email },
+            { code, expiresAt },
+            { upsert: true, new: true }
+        );
+
+        await sendEmailVerification(email, code);
+
+        res.json({ success: true, message: 'Verification code sent' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route 7: verify signup code using: POST "api/auth/verify-signup-code"
+router.post('/verify-signup-code', async (req, res) => {
+    const { email, code } = req.body;
+
+    if (!email || !code) return res.status(400).json({ error: 'Email and code required' });
+
+    try {
+        const record = await SignupVerification.findOne({ email });
+
+        if (!record) {
+            return res.status(400).json({ error: 'No verification code found for this email' });
+        }
+
+        if (record.code === code && Date.now() < record.expiresAt) {
+            await SignupVerification.deleteOne({ email }); // clear used code
+            return res.json({ success: true });
+        } else {
+            return res.status(400).json({ error: 'Invalid or expired code' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route 8: Request for reset code using: POST "/api/auth/send-reset-code"
+router.post('/send-reset-code', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+        user.resetCode = code;
+        user.resetCodeExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+        await user.save();
+        await sendEmailVerification(email, code);
+
+        return res.json({ success: true, message: 'Verification code sent to email' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+// Route 9: Verify reset password code using: POST "/api/auth/verify-reset-code"
+router.post('/verify-reset-code', async (req, res) => {
+    const { email, code } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user || user.resetCode !== code || Date.now() > user.resetCodeExpires) {
+            return res.status(400).json({ error: 'Invalid or expired verification code' });
+        }
+
+        return res.json({ success: true, message: 'Code verified' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+// Route 10: Reset password using: POST "/api/auth/reset-password"
+router.post('/reset-password', async (req, res) => {
+    const { email, code, newPassword } = req.body;
+
+    if (!email || !code || !newPassword) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user || user.resetCode !== code || Date.now() > user.resetCodeExpires) {
+            return res.status(400).json({ error: 'Invalid or expired code' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+        user.resetCode = undefined;
+        user.resetCodeExpires = undefined;
+
+        await user.save();
+
+        return res.json({ success: true, message: 'Password reset successful' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
 });
 
 module.exports = router;

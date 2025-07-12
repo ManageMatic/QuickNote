@@ -7,7 +7,7 @@ const UserAvatar = (props) => {
     const host = 'http://localhost:5000';
     const [user, setUser] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const [avatar, setAvatar] = useState(localStorage.getItem('customAvatar') || null);
+    const [avatar, setAvatar] = useState(null);
 
     const modalRef = useRef(null);
     const avatarRef = useRef(null);
@@ -36,6 +36,11 @@ const UserAvatar = (props) => {
             if (res.ok) {
                 const data = await res.json();
                 setUser(data);
+
+                // ✅ Load avatar specific to this user's email
+                const avatarKey = `customAvatar-${data.email}`;
+                const storedAvatar = localStorage.getItem(avatarKey);
+                setAvatar(storedAvatar);
             }
         };
 
@@ -63,12 +68,13 @@ const UserAvatar = (props) => {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if (file && user?.email) {
             const reader = new FileReader();
             reader.onload = () => {
                 const base64Image = reader.result;
                 setAvatar(base64Image);
-                localStorage.setItem('customAvatar', base64Image);
+                // ✅ Save avatar with user-specific key
+                localStorage.setItem(`customAvatar-${user.email}`, base64Image);
             };
             reader.readAsDataURL(file);
         }
@@ -79,7 +85,7 @@ const UserAvatar = (props) => {
             const response = await fetch(`${host}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
-            })
+            });
             if (response.ok) {
                 navigate('/login');
             } else {
@@ -88,11 +94,13 @@ const UserAvatar = (props) => {
         } catch (error) {
             props.showAlert("An error occurred while logging out", "error");
         }
-    }
-
+    };
 
     const displayImage =
-        avatar || (user?.email ? `https://www.gravatar.com/avatar/${md5(user.email.trim().toLowerCase())}?d=identicon` : '');
+        avatar ||
+        (user?.email
+            ? `https://www.gravatar.com/avatar/${md5(user.email.trim().toLowerCase())}?d=identicon`
+            : '');
 
     return (
         <>

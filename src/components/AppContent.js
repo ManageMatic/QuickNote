@@ -8,9 +8,10 @@ import Login from './Login';
 import Signup from './Signup';
 import { ensureAccess } from '../utils/refreshToken';
 import Trash from './Trash';
+import ForgotPassword from './ForgotPassword';
 
 const host = 'http://localhost:5000';
-const hideNavbarPaths = ['/login', '/signup'];
+const publicPaths = ['/login', '/signup', '/forgot-password', '/reset-password'];
 
 const AppContent = ({ showAlert, alert }) => {
     const location = useLocation();
@@ -19,7 +20,7 @@ const AppContent = ({ showAlert, alert }) => {
 
     useEffect(() => {
         // Skip check on /login or /signup
-        if (hideNavbarPaths.includes(location.pathname)) return;
+        if (publicPaths.includes(location.pathname)) return;
 
         let intervalId;
 
@@ -62,7 +63,7 @@ const AppContent = ({ showAlert, alert }) => {
 
     return (
         <>
-            {!hideNavbarPaths.includes(location.pathname) && (
+            {!publicPaths.includes(location.pathname) && (
                 <Navbar isAuthenticated={isAuthenticated} showAlert={showAlert} />
             )}
 
@@ -75,6 +76,7 @@ const AppContent = ({ showAlert, alert }) => {
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login showAlert={showAlert} />} />
                     <Route path="/signup" element={<Signup showAlert={showAlert} />} />
+                    <Route path="/forgot-password" element={<ForgotPassword showAlert={showAlert} />} />
                 </Routes>
             </div>
         </>
