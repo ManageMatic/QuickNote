@@ -27,14 +27,15 @@
 }
 
 .custom-alert.warning {
-    background-color: #ffc400;
+    background-color: #ffda62;
     color: #856404;
-    border-left: 6px solid #FFC107;
+    border-left: 6px solid #ffc400;
 }
+
 .custom-alert.error {
     background-color: #ff7700;
     color: #5a0000;
-    border-left: 6px solid #ff4d4d;
+    border-left: 6px solid #ff0000;
 }
 
 .custom-alert .close-btn {

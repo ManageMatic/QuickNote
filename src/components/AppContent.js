@@ -37,7 +37,7 @@ const AppContent = ({ showAlert, alert }) => {
                     });
 
                     if (!ref.ok) {
-                        showAlert('Session expired. Please log in again.', 'danger');
+                        showAlert('Session expired. Please log in again.', 'error');
                         setIsAuthenticated(false);
                         navigate('/login');
                         return;
@@ -50,7 +50,7 @@ const AppContent = ({ showAlert, alert }) => {
                 intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
             } catch (err) {
                 console.error('Auth check failed:', err);
-                showAlert('Failed to verify session.', 'danger');
+                showAlert('Failed to verify session.', 'error');
                 setIsAuthenticated(false);
                 navigate('/login');
             }

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const ACCESS_SECRET = process.env.ACCESS_SECRET || 'quicknote_access';
-const REFRESH_SECRET = process.env.REFRESH_SECRET || 'quicknote_refresh';
+const ACCESS_SECRET = process.env.ACCESS_SECRET;
+const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 exports.issueAccessToken = (user) =>
     jwt.sign({ id: user.id }, ACCESS_SECRET, { expiresIn: '15m' });

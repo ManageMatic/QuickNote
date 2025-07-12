@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const fetchUser = require('../middleware/fetchUser');
 const Notes = require('../models/Notes');
-const { body, validationResult } = require('express-validator');
 
 // Route 1: Fetch all notes using: GET "api/notes/fetchallnotes". logged in user required
 router.get('/fetchallnotes', fetchUser, async (req, res) => {

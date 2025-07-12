@@ -81,13 +81,12 @@ const UserAvatar = (props) => {
                 credentials: 'include',
             })
             if (response.ok) {
-                props.showAlert("Logged out successfully", "success");
                 navigate('/login');
             } else {
-                props.showAlert("Failed to log out", "danger");
+                props.showAlert("Failed to log out", "error");
             }
         } catch (error) {
-            props.showAlert("An error occurred while logging out", "danger");
+            props.showAlert("An error occurred while logging out", "error");
         }
     }
 

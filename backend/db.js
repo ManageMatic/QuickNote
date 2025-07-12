@@ -1,8 +1,10 @@
+require('dotenv').config({ path: __dirname + '/.env' });
 const mongoose = require('mongoose');
 
-const mongoURI = 'mongodb://127.0.0.1:27017/quicknote';
+const mongoURI = process.env.MONGO_URI;
 
 const connectToMongo = async () => {
+  console.log("🔍 MONGO_URI:", process.env.MONGO_URI);
   try {
     await mongoose.connect(mongoURI);
     console.log('Connected to MongoDB successfully!');

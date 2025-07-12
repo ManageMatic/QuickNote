@@ -1,4 +1,3 @@
-// middleware/fetchuser.js
 const { verifyAccessToken } = require('../utils/token');
 
 const fetchUser = (req, res, next) => {

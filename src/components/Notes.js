@@ -16,7 +16,7 @@ const Notes = (props) => {
         const fetchNotes = async () => {
             const ok = await getNotes();
             if (!ok) {
-                showAlert('Session expired. Please log in again.', 'danger');
+                showAlert('Session expired. Please log in again.', 'error');
                 navigate('/login');
             }
         };

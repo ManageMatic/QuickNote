@@ -23,7 +23,7 @@ const Login = (props) => {
             showAlert("Logged in successfully", "success");
             navigate('/');
         } else {
-            showAlert("Invalid credentials", "danger");
+            showAlert("Invalid credentials", "error");
         }
     }
 
@@ -40,11 +40,11 @@ const Login = (props) => {
                     <form onSubmit={handleSubmit} className="login-form">
                         <div className="form-group">
                             <label htmlFor="email" className="form-label">Email address</label>
-                            <input type="email" id="email" name="email" className="login-input" value={credentials.email} onChange={onchange} />
+                            <input type="email" id="email" name="email" className="login-input" value={credentials.email} onChange={onchange} required />
                         </div>
                         <div className="form-group">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" id="password" name="password" className="login-input" value={credentials.password} onChange={onchange} />
+                            <input type="password" id="password" name="password" className="login-input" value={credentials.password} onChange={onchange} required />
                         </div>
                         <button type="submit" className="btn-login">Login</button>
                         <div className="login-footer">
