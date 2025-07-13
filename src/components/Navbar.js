@@ -30,15 +30,9 @@ const Navbar = ({ isAuthenticated, showAlert }) => {
           {isAuthenticated
             ? (
               <form className="d-flex" role="search">
-                {/* <button className="btn nav-logout-btn mx-1" onClick={handleLogOut}>Logout</button> */}
                 <UserAvatar showAlert={showAlert} />
               </form>
-            ) : (
-              <form className="d-flex" role="search">
-                <Link className="btn nav-login-btn mx-1" to="/login">Login</Link>
-                <Link className="btn nav-signup-btn mx-1" to="/signup">Signup</Link>
-              </form>
-            )
+            ) : ('')
           }
         </div>
       </div>

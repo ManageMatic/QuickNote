@@ -24,20 +24,16 @@
     font-weight: bold;
 }
 
-.nav-login-btn,
-.nav-signup-btn,
 .nav-logout-btn {
-    background-color: #CEF4EB;
-    color: #052560;
+    background: linear-gradient(135deg, #0080ff, #001F3F);
+    color: #CEF4EB;
     border: none;
     font-weight: 500;
     transition: background-color 0.3s ease;
 }
 
-.nav-login-btn:hover,
-.nav-signup-btn:hover,
 .nav-logout-btn:hover {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #ff9900, #FFD700);
     color: #052560;
 }
 

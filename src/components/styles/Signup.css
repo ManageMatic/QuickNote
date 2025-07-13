@@ -129,7 +129,7 @@
 .btn-signup {
     width: 100%;
     padding: 10px;
-    background-color: #001F3F;
+    background: linear-gradient(135deg, #0080ff, #001F3F);
     color: white;
     font-weight: bold;
     border: none;
@@ -139,7 +139,7 @@
 }
 
 .btn-signup:hover {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #ff9900, #FFD700);
     color: #001F3F;
 }
 

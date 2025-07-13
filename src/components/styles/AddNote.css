@@ -30,7 +30,8 @@ input[type="datetime-local"] {
 }
 
 .btn.btn-primary {
-    background-color: #001F3F;
+    background: linear-gradient(135deg, #0080ff, #001F3F);
+    color: #CEF4EB;
     border: none;
     border-radius: 8px;
     padding: 8px 18px;
@@ -39,7 +40,7 @@ input[type="datetime-local"] {
 }
 
 .btn.btn-primary:hover {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #ff9900, #FFD700);
     color: #001F3F;
 }
 
