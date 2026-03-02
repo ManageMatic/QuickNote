@@ -92,6 +92,10 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ## 📸 Screenshots
 
+
+```md
+## 📸 Screenshots
+
 ### 🔐 Login Page
 ![Login](screenshots/Login.png)
 
@@ -107,6 +111,8 @@ This project demonstrates real-world backend authentication logic and frontend s
 ### 🔁 Forgot Password
 ![Forgot Password](screenshots/Forgot-Password.png)
 ```
+
+---
 
 ## ⚙️ Installation Guide
 
@@ -218,7 +224,7 @@ QuickNote/
 **Ishan Mahida**
 
 * GitHub: [https://github.com/ManageMatic](https://github.com/ManageMatic)
-* LinkedIn: (https://www.linkedin.com/in/ishan-mahida-b90959338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+* LinkedIn: https://www.linkedin.com/in/ishan-mahida-b90959338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
 
 ---
 
