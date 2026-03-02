@@ -90,7 +90,6 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ---
 
-```md
 ## 📸 Screenshots
 
 ### 🔐 Login Page
@@ -100,7 +99,7 @@ This project demonstrates real-world backend authentication logic and frontend s
 ![Dashboard](screenshots/Home.png)
 
 ### 📧 About
-![Verification](screenshots/Signup.png)
+![About](screenshots/About.png)
 
 ### 👤 Signup
 ![Signup](screenshots/Signup.png)
@@ -111,6 +110,7 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ---
 
+```md
 ## ⚙️ Installation Guide
 
 ### 1️⃣ Clone Repository
