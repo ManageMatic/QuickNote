@@ -110,6 +110,15 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ---
 
+## ⚙️ Installation Guide
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/yourusername/quicknote.git
+cd quicknote
+```
+
 ---
 
 ## ⚙️ Installation Guide
