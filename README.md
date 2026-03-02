@@ -110,7 +110,6 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ---
 
-```md
 ## ⚙️ Installation Guide
 
 ### 1️⃣ Clone Repository
