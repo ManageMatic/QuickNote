@@ -99,7 +99,7 @@ This project demonstrates real-world backend authentication logic and frontend s
 ![Dashboard](screenshots/Home.png)
 
 ### 📧 About
-![Verification](screenshots/Signup.png)
+![Verification](screenshots/About.png)
 
 ### 👤 Signup
 ![Signup](screenshots/Signup.png)
