@@ -121,6 +121,17 @@ cd quicknote
 
 ---
 
+## ⚙️ Installation Guide
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/yourusername/quicknote.git
+cd quicknote
+```
+
+---
+
 ### 2️⃣ Setup Backend
 
 ```bash
