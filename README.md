@@ -97,19 +97,19 @@ This project demonstrates real-world backend authentication logic and frontend s
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login](screenshots/Login.png)
+<img src="screenshots/Login.png" width="600"/>
 
 ### 📝 Dashboard
-![Dashboard](screenshots/Home.png)
+<img src="screenshots/Home.png" width="600"/>
 
 ### 📧 About
-![Verification](screenshots/About.png)
+<img src="screenshots/About.png" width="600"/>
 
 ### 👤 Signup
-![Signup](screenshots/Signup.png)
+<img src="screenshots/Signup.png" width="600"/>
 
 ### 🔁 Forgot Password
-![Forgot Password](screenshots/Forgot-Password.png)
+<img src="screenshots/Forgot-Password.png" width="600"/>
 ```
 
 ---
