@@ -108,8 +108,6 @@ This project demonstrates real-world backend authentication logic and frontend s
 ![Forgot Password](screenshots/Forgot-Password.png)
 ```
 
----
-
 ## ⚙️ Installation Guide
 
 ### 1️⃣ Clone Repository
