@@ -181,6 +181,29 @@ QuickNote follows a secure authentication design:
 
 ---
 
+## 📂 Project Structure
+
+```
+QuickNote/
+│
+├── backend/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── utils/
+│   └── index.js
+│
+├── frontend/
+│   ├── src/
+│   └── public/
+│
+├── screenshots/
+├── README.md
+└── .env.example
+```
+
+---
+
 ## 🚀 Future Improvements
 
 * Deploy to Vercel + Render
@@ -197,3 +220,11 @@ QuickNote follows a secure authentication design:
 
 * GitHub: https://github.com/ManageMatic
 * LinkedIn: https://www.linkedin.com/in/ishan-mahida-b90959338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
