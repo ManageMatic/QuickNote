@@ -93,7 +93,7 @@ This project demonstrates real-world backend authentication logic and frontend s
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login](screenshots/login.png)
+![Login](screenshots/Login.png)
 
 ### 📝 Dashboard
 ![Dashboard](screenshots/Home.png)
