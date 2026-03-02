@@ -106,18 +106,8 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ### 🔁 Forgot Password
 ![Forgot Password](screenshots/Forgot-Password.png)
-```
 
 ---
-
-## ⚙️ Installation Guide
-
-### 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/yourusername/quicknote.git
-cd quicknote
-```
 
 ---
 
