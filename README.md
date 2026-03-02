@@ -90,26 +90,23 @@ This project demonstrates real-world backend authentication logic and frontend s
 
 ---
 
-## 📸 Screenshots
-
-
 ```md
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-<img src="screenshots/Login.png" width="600"/>
+![Login](screenshots/Login.png)
 
 ### 📝 Dashboard
-<img src="screenshots/Home.png" width="600"/>
+![Dashboard](screenshots/Home.png)
 
 ### 📧 About
-<img src="screenshots/About.png" width="600"/>
+![Verification](screenshots/Signup.png)
 
 ### 👤 Signup
-<img src="screenshots/Signup.png" width="600"/>
+![Signup](screenshots/Signup.png)
 
 ### 🔁 Forgot Password
-<img src="screenshots/Forgot-Password.png" width="600"/>
+![Forgot Password](screenshots/Forgot-Password.png)
 ```
 
 ---
@@ -186,29 +183,6 @@ QuickNote follows a secure authentication design:
 
 ---
 
-## 📂 Project Structure
-
-```
-QuickNote/
-│
-├── backend/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── utils/
-│   └── index.js
-│
-├── frontend/
-│   ├── src/
-│   └── public/
-│
-├── screenshots/
-├── README.md
-└── .env.example
-```
-
----
-
 ## 🚀 Future Improvements
 
 * Deploy to Vercel + Render
@@ -223,13 +197,5 @@ QuickNote/
 
 **Ishan Mahida**
 
-* GitHub: [https://github.com/ManageMatic](https://github.com/ManageMatic)
+* GitHub: https://github.com/ManageMatic
 * LinkedIn: https://www.linkedin.com/in/ishan-mahida-b90959338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
