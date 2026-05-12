@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/Alert.css';
+import '../styles/Alert.css';
 
 const Alert = ({ alert }) => {
     const capitalize = (word) => {

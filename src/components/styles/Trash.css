@@ -1,74 +1,50 @@
-.trash-container {
-    padding: 24px;
+/* ── Trash page ────────────────────────────────────── */
+.trash-page {
+  padding: 2rem;
+  padding-top: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.trash-container h1 {
-    color: #001F3F;
-    margin-bottom: 20px;
+.trash-header {
+  margin-bottom: 2.5rem;
 }
 
-.trash-card {
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    border: none;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+.trash-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.note-title {
-    color: #001F3F;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+.trash-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-2);
 }
 
-.note-description {
-    color: #052560;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+.trash-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-3);
+  font-size: 1rem;
 }
 
-.note-tag {
-    color: #FFD700;
-    font-size: 0.85rem;
+.trash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
-.btn-success,
-.btn-danger {
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.85rem;
-    padding: 6px 12px;
-    transition: all 0.3s ease;
+/* Note cards in trash reuse some base styles but look slightly different */
+.note-card.trashed {
+  opacity: 0.8;
+  transition: all var(--transition);
 }
 
-.btn-success:hover {
-    background-color: #28a745;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-@media (max-width: 768px) {
-    .trash-container {
-        padding: 16px;
-    }
-
-    .custom-card {
-        padding: 0.8rem;
-    }
-
-    .note-title {
-        font-size: 1.25rem;
-    }
-
-    .note-description {
-        font-size: 1rem;
-    }
+.note-card.trashed:hover {
+  opacity: 1;
+  transform: translateY(-4px);
 }

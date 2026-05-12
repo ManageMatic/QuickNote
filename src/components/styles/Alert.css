@@ -1,47 +1,44 @@
 .custom-alert-container {
-    position: fixed;
-    top: 5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    width: 90%;
-    max-width: 500px;
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
+  min-width: 280px;
+  max-width: 500px;
+  width: max-content;
+  pointer-events: none;
 }
 
 .custom-alert {
-    padding: 12px 18px;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0px 4px 12px rgba(0, 31, 63, 0.15);
-    transition: opacity 0.4s ease-in-out;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  border: 1px solid;
+  animation: fadeUp 0.3s ease;
+  text-align: center;
 }
 
 .custom-alert.success {
-    background-color: #00ffc3;
-    color: #001F3F;
-    border-left: 6px solid #052560;
+  background: rgba(16,185,129,0.15);
+  border-color: rgba(16,185,129,0.35);
+  color: #6ee7b7;
 }
-
+.custom-alert.error,
+.custom-alert.danger {
+  background: rgba(244,63,94,0.15);
+  border-color: rgba(244,63,94,0.35);
+  color: #fda4af;
+}
 .custom-alert.warning {
-    background-color: #ffda62;
-    color: #856404;
-    border-left: 6px solid #ffc400;
+  background: rgba(245,158,11,0.15);
+  border-color: rgba(245,158,11,0.35);
+  color: #fcd34d;
 }
-
-.custom-alert.error {
-    background-color: #ff7700;
-    color: #5a0000;
-    border-left: 6px solid #ff0000;
-}
-
-.custom-alert .close-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: inherit;
-    cursor: pointer;
+.custom-alert.info {
+  background: rgba(56,189,248,0.15);
+  border-color: rgba(56,189,248,0.35);
+  color: #7dd3fc;
 }

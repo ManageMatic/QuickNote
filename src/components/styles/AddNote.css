@@ -1,49 +1,111 @@
-.notes-container {
-    padding: 24px;
+/* ── AddNote ───────────────────────────────────────── */
+.addnote-wrap { padding-bottom: 1rem; }
+
+.addnote-header { margin-bottom: 1.5rem; }
+.addnote-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 0.2rem;
+}
+.addnote-subtitle { font-size: 0.82rem; color: var(--text-3); }
+
+.addnote-form { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.addnote-field {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+.addnote-field-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.addnote-input { padding-left: 2.6rem !important; }
+
+.addnote-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
 }
 
-.notes-container h1 {
-    color: #001F3F;
-    margin-bottom: 20px;
+/* Expandable section */
+.addnote-expandable {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.addnote-expandable.open {
+  max-height: 1000px;
+  opacity: 1;
+  padding-top: 1rem;
 }
 
-.form-label {
-    color: #001F3F;
-    font-weight: 500;
+.addnote-quill-wrap {
+  margin-bottom: 0.25rem;
 }
 
-.form-control:focus {
-    border-color: #A8D5E2;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(168, 213, 226, 0.4);
+/* Color Picker Styles */
+.addnote-color-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+}
+.color-label {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.color-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.color-dot:hover {
+  transform: scale(1.15);
+}
+.color-dot.active {
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
-input[type="text"],
-textarea,
-input[type="datetime-local"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #aaa;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 1rem;
+.addnote-actions {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.addnote-actions > button {
+  flex: 1;
+  justify-content: center;
+  min-width: 100px;
 }
 
-.btn.btn-primary {
-    background: linear-gradient(135deg, #0080ff, #001F3F);
-    color: #CEF4EB;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 18px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn.btn-primary:hover {
-    background: linear-gradient(135deg, #ff9900, #FFD700);
-    color: #001F3F;
-}
-
-textarea.form-control {
-    height: 100%;
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .addnote-row { flex-direction: column; }
 }

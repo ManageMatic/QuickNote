@@ -1,42 +1,142 @@
-.navbar-custom {
-    background-color: #052560;
-    border-bottom: 2px solid #FFD700;
+/* ── Navbar ────────────────────────────────────────── */
+.qn-navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1100;
+  padding: 0 6%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  border-bottom: 1px solid transparent;
 }
 
-.navbar-brand {
-    color: #CEF4EB !important;
-    font-weight: 600;
-    font-size: 1.4rem;
+.qn-navbar.scrolled,
+.qn-navbar:not(.landing-nav) {
+  background: rgba(7,7,15,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
 
-.nav-link {
-    color: #CEF4EB !important;
-    transition: all 0.3s ease;
+.qn-nav-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
-.nav-link:hover,
-.nav-link:focus {
-    color: #FFD700 !important;
+/* Brand */
+.qn-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--text-1);
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.qn-logo {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
 }
 
-.nav-link.active {
-    color: #FFD700 !important;
-    font-weight: bold;
+/* Desktop links */
+.qn-links {
+  display: flex;
+  list-style: none;
+  gap: 0.25rem;
+  margin-right: auto;
 }
 
-.nav-logout-btn {
-    background: linear-gradient(135deg, #0080ff, #001F3F);
-    color: #CEF4EB;
-    border: none;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+.qn-link {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  position: relative;
+}
+.qn-link:hover { color: var(--text-1); background: rgba(255,255,255,0.06); }
+.qn-link.active { color: var(--accent-light); background: var(--accent-dim); }
+
+/* Right side */
+.qn-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.qn-auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.qn-btn-sm {
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.88rem !important;
 }
 
-.nav-logout-btn:hover {
-    background: linear-gradient(135deg, #ff9900, #FFD700);
-    color: #052560;
+/* Hamburger */
+.qn-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
 }
+.qn-hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text-1);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.qn-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.qn-hamburger.open span:nth-child(2) { opacity: 0; }
+.qn-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-.navbar-toggler {
-    border: 1px solid #CEF4EB;
+/* Mobile drawer */
+.qn-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 64px; left: 0; right: 0;
+  background: rgba(7,7,15,0.97);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 6%;
+  flex-direction: column;
+  gap: 0.25rem;
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition), transform var(--transition);
+  backdrop-filter: blur(20px);
+}
+.qn-mobile-menu.open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.qn-mobile-link {
+  padding: 0.7rem 0.5rem;
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  transition: color var(--transition);
+}
+.qn-mobile-link:last-of-type { border-bottom: none; }
+.qn-mobile-link:hover, .qn-mobile-link.active { color: var(--accent-light); }
+
+@media (max-width: 768px) {
+  .qn-links, .qn-auth-btns { display: none; }
+  .qn-hamburger { display: flex; }
 }

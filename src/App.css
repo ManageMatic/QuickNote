@@ -1,29 +1,38 @@
-html,
-body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #b1ffed, #7ae2ff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #001F3F;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
+/* App-level layout */
 .App {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-0);
 }
 
 .main-content {
-    flex: 1;
+  flex: 1;
 }
 
-.about-footer {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #333;
-    padding: 10px;
-    border-top: 0.01rem solid #001F3F;
+.app-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-copyright {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .app-footer {
+    padding: 1.25rem 1rem;
+  }
 }

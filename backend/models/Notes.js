@@ -39,6 +39,14 @@ const NoteSchema = new Schema({
         type: Date,
         default: null
     },
+    reminderSent: {
+        type: Boolean,
+        default: false
+    },
+    color: {
+        type: String,
+        default: "transparent"
+    },
 });
 
 module.exports = mongoose.model('notes', NoteSchema)

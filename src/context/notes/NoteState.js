@@ -7,21 +7,20 @@ const host = 'http://localhost:5000';
 const NoteState = (props) => {
     /* -------- State -------- */
     const [notes, setNotes] = useState([]);
-    const [trashedNotes, setTrashedNotes] = useState([]);
 
     /* -------- Add -------- */
-    const addNote = async (title, description, tag, reminder) => {
+    const addNote = async (title, description, tag, reminder, color) => {
         const res = await fetch(`${host}/api/notes/addnote`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, description, tag, reminder })
+            body: JSON.stringify({ title, description, tag, reminder, color })
         });
         const note = await res.json();
         setNotes(prev => prev.concat(note));
     };
 
-    /* -------- Fetch All (non‑trashed) -------- */
+    /* -------- Fetch All (including trashed) -------- */
     const getNotes = useCallback(async () => {
         try {
             const fetchAll = async () => {
@@ -33,14 +32,12 @@ const NoteState = (props) => {
 
                 const list = await res.json();
                 setNotes(list);
-                notesRef.current = list; // store in ref for interval checking
+                notesRef.current = list;
                 return true;
             };
 
-            // First attempt
             if (await fetchAll()) return true;
 
-            // Silent refresh
             const refresh = await fetch(`${host}/api/auth/refresh-token`, {
                 method: 'POST',
                 credentials: 'include',
@@ -77,21 +74,45 @@ const NoteState = (props) => {
                     }
                 }
             });
-        }, 30000); // checks every 30 seconds
+        }, 30000);
         return () => clearInterval(interval);
     }, []);
 
     /* -------- Edit -------- */
-    const editNote = async (id, title, description, tag) => {
+    const editNote = async (id, title, description, tag, color) => {
         await fetch(`${host}/api/notes/updatenote/${id}`, {
             method: 'PUT',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, description, tag })
+            body: JSON.stringify({ title, description, tag, color })
         });
         setNotes(prev =>
-            prev.map(n => (n._id === id ? { ...n, title, description, tag } : n))
+            prev.map(n => (n._id === id ? { ...n, title, description, tag, color } : n))
         );
+    };
+
+    /* -------- Toggle Pin -------- */
+    const togglePin = async (id) => {
+        const res = await fetch(`${host}/api/notes/togglepin/${id}`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            setNotes(prev => prev.map(n => n._id === id ? { ...n, pinned: data.pinned } : n));
+        }
+    };
+
+    /* -------- Toggle Favorite -------- */
+    const toggleFavorite = async (id) => {
+        const res = await fetch(`${host}/api/notes/togglefavorite/${id}`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            setNotes(prev => prev.map(n => n._id === id ? { ...n, favorite: data.favorite } : n));
+        }
     };
 
     /* -------- Move to Trash (soft‑delete) -------- */
@@ -101,9 +122,7 @@ const NoteState = (props) => {
             credentials: 'include'
         });
         if (res.ok) {
-            setNotes(prev => prev.filter(n => n._id !== id));
-            const trashed = await res.json();           // returns the note or msg
-            setTrashedNotes(prev => prev.concat(trashed));
+            setNotes(prev => prev.map(n => n._id === id ? { ...n, trashed: true } : n));
         }
     };
 
@@ -114,9 +133,7 @@ const NoteState = (props) => {
             credentials: 'include'
         });
         if (res.ok) {
-            const restored = await res.json();
-            setTrashedNotes(prev => prev.filter(n => n._id !== id));
-            setNotes(prev => prev.concat(restored));
+            setNotes(prev => prev.map(n => n._id === id ? { ...n, trashed: false } : n));
         }
     };
 
@@ -127,31 +144,26 @@ const NoteState = (props) => {
             credentials: 'include'
         });
         if (res.ok) {
-            setTrashedNotes(prev => prev.filter(n => n._id !== id));
+            setNotes(prev => prev.filter(n => n._id !== id));
         }
     };
 
-    /* -------- Fetch all trashed -------- */
-    const getTrashedNotes = async () => {
-        try {
-            const res = await fetch(`${host}/api/notes/trash`, {
-                method: 'GET',
-                credentials: 'include'
-            });
-            if (res.ok) {
-                setTrashedNotes(await res.json());
-                return true;
-            }
-            return false;
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
+    /* -------- Logout -------- */
+    const logout = async () => {
+        await fetch(`${host}/api/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        setNotes([]);
     };
 
     return (
         <NoteContext.Provider
-            value={{ notes, addNote, getNotes, editNote, moveToTrash, trashedNotes, getTrashedNotes, restoreNote, deleteNoteForever }}>
+            value={{ 
+                notes, addNote, getNotes, editNote, togglePin, toggleFavorite,
+                moveToTrash, restoreNote, deleteNoteForever,
+                logout 
+            }}>
             {props.children}
         </NoteContext.Provider>
     );

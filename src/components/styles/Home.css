@@ -1,17 +1,40 @@
-.dashboard {
-    display: flex;
-    padding: 10px;
-    margin-top: 5rem;
-    align-items: stretch;
+/* ── Dashboard layout ──────────────────────────────── */
+.dashboard-page {
+  min-height: 100vh;
+  padding-top: 64px; /* navbar height */
+  background: var(--bg-0);
 }
 
-.dashboard-left {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 50%;
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 64px);
 }
 
-.dashboard-right {
-    flex: 1 1 50%;
-    max-height: calc(103vh - 220px);
+.dashboard-sidebar {
+  background: var(--bg-1);
+  border-right: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.dashboard-main {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
 }
