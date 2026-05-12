@@ -6,7 +6,7 @@ const User = require('../models/User');
 const fetchUser = require('../middleware/fetchUser');
 const { body, validationResult } = require('express-validator');
 const { issueAccessToken, issueRefreshToken, verifyRefreshToken } = require('../utils/token');
-const sendEmailVerification = require('../utils/sendEmail');
+const { sendEmailVerification, sendPasswordResetEmail } = require('../utils/sendEmail');
 const SignupVerification = require('../models/SignupVerification');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -224,7 +224,7 @@ router.post('/send-reset-code', async (req, res) => {
         user.resetCodeExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
         await user.save();
-        await sendEmailVerification(email, code);
+        await sendPasswordResetEmail(email, code);
 
         return res.json({ success: true, message: 'Verification code sent to email' });
     } catch (err) {

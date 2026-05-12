@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faEdit, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faEdit, faPalette, faFolder } from '@fortawesome/free-solid-svg-icons';
+import NoteContext from '../../context/notes/NoteContext';
+import { useContext } from 'react';
 
 const UpdateNoteModal = ({ isOpen, onClose, noteData, onSave, showAlert }) => {
-  const [note, setNote] = useState({ _id: '', etitle: '', edescription: '', etag: '', ecolor: 'transparent' });
+  const { folders } = useContext(NoteContext);
+  const [note, setNote] = useState({ _id: '', etitle: '', edescription: '', etag: '', ecolor: 'transparent', efolder: '' });
 
   const colors = [
     { name: 'Default', value: 'transparent' },
@@ -23,14 +26,15 @@ const UpdateNoteModal = ({ isOpen, onClose, noteData, onSave, showAlert }) => {
         etitle: noteData.title,
         edescription: noteData.description,
         etag: noteData.tag,
-        ecolor: noteData.color || 'transparent'
+        ecolor: noteData.color || 'transparent',
+        efolder: noteData.folder || ''
       });
     }
   }, [noteData]);
 
   const handleSave = (e) => {
     e.preventDefault();
-    onSave(note._id, note.etitle, note.edescription, note.etag, note.ecolor);
+    onSave(note._id, note.etitle, note.edescription, note.etag, note.ecolor, note.efolder);
     onClose();
     showAlert('Note updated successfully', 'success');
   };
@@ -80,11 +84,27 @@ const UpdateNoteModal = ({ isOpen, onClose, noteData, onSave, showAlert }) => {
           </div>
 
           <div className="qn-modal-row">
-            <div className="qn-modal-field half">
+            <div className="qn-modal-field third">
               <label htmlFor="etag">Tag</label>
               <input id="etag" name="etag" className="input-dark" value={note.etag} onChange={onChange} />
             </div>
-            <div className="qn-modal-field half">
+            <div className="qn-modal-field third">
+              <label htmlFor="efolder"><FontAwesomeIcon icon={faFolder} /> Collection</label>
+              <select 
+                id="efolder" 
+                name="efolder" 
+                className="input-dark" 
+                value={note.efolder} 
+                onChange={onChange}
+                style={{ appearance: 'auto', padding: '0.65rem' }}
+              >
+                <option value="">No Collection</option>
+                {folders.map(f => (
+                  <option key={f._id} value={f._id}>{f.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="qn-modal-field third">
                <label><FontAwesomeIcon icon={faPalette} /> Color</label>
                <div className="modal-color-options">
                 {colors.map(c => (
