@@ -13,11 +13,11 @@ const AddNote = ({ showAlert }) => {
 
   const colors = [
     { name: 'Default', value: 'transparent' },
-    { name: 'Purple',  value: 'rgba(124, 58, 237, 0.2)' },
-    { name: 'Blue',    value: 'rgba(56, 189, 248, 0.2)' },
-    { name: 'Green',   value: 'rgba(16, 185, 129, 0.2)' },
-    { name: 'Pink',    value: 'rgba(236, 72, 153, 0.2)' },
-    { name: 'Yellow',  value: 'rgba(245, 158, 11, 0.2)' },
+    { name: 'Purple', value: 'rgba(124, 58, 237, 0.2)' },
+    { name: 'Blue', value: 'rgba(56, 189, 248, 0.2)' },
+    { name: 'Green', value: 'rgba(16, 185, 129, 0.2)' },
+    { name: 'Pink', value: 'rgba(236, 72, 153, 0.2)' },
+    { name: 'Yellow', value: 'rgba(245, 158, 11, 0.2)' },
   ];
 
   const handleClick = (e) => {
@@ -73,7 +73,7 @@ const AddNote = ({ showAlert }) => {
               value={note.description}
               onChange={onDescriptionChange}
               modules={quillModules}
-              placeholder="What's on your mind? (Rich text supported)"
+              placeholder="What's on your mind?"
               className="qn-quill-editor"
             />
           </div>

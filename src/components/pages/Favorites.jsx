@@ -15,12 +15,19 @@ const Favorites = ({ showAlert }) => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      setLoading(true);
+      const shouldShowSkeleton = notes.length === 0;
+      if (shouldShowSkeleton) setLoading(true);
+      
       await getNotes();
-      setTimeout(() => setLoading(false), 600);
+      
+      if (shouldShowSkeleton) {
+        setTimeout(() => setLoading(false), 500);
+      } else {
+        setLoading(false);
+      }
     };
     fetchNotes();
-  }, [getNotes]);
+  }, [getNotes, notes.length]);
 
   const updateNote = (currentNote) => {
     setSelectedNote(currentNote);

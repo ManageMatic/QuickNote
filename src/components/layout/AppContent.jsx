@@ -58,7 +58,12 @@ const AppContent = ({ showAlert, alert }) => {
           }
         }
 
-        setIsAuthenticated(true);
+        // Only update if state actually changes to prevent double-render
+        setIsAuthenticated(prev => {
+          if (!prev) return true;
+          return prev;
+        });
+        
         ensureAccess();
         intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
       } catch (err) {

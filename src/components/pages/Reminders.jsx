@@ -15,12 +15,20 @@ const Reminders = ({ showAlert }) => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      setLoading(true);
+      // Only show skeleton if we have no notes at all
+      const shouldShowSkeleton = notes.length === 0;
+      if (shouldShowSkeleton) setLoading(true);
+      
       await getNotes();
-      setTimeout(() => setLoading(false), 600);
+      
+      if (shouldShowSkeleton) {
+        setTimeout(() => setLoading(false), 500);
+      } else {
+        setLoading(false);
+      }
     };
     fetchNotes();
-  }, [getNotes]);
+  }, [getNotes, notes.length]);
 
   const updateNote = (currentNote) => {
     setSelectedNote(currentNote);
@@ -28,8 +36,8 @@ const Reminders = ({ showAlert }) => {
   };
 
   // Filter notes that have a reminder and are not trashed
-  const upcomingReminders = notes.filter(n => n.reminder && !n.reminderSent && !n.trashed).sort((a, b) => new Date(a.reminder) - new Date(b.reminder));
-  const pastReminders = notes.filter(n => (n.reminderSent || (n.reminder && new Date(n.reminder) < new Date())) && !n.trashed).sort((a, b) => new Date(b.reminder) - new Date(a.reminder));
+  const upcomingReminders = notes.filter(n => n.reminder && !n.reminderSent && new Date(n.reminder) > new Date() && !n.trashed).sort((a, b) => new Date(a.reminder) - new Date(b.reminder));
+  const pastReminders = notes.filter(n => n.reminder && (n.reminderSent || new Date(n.reminder) <= new Date()) && !n.trashed).sort((a, b) => new Date(b.reminder) - new Date(a.reminder));
 
   return (
     <>

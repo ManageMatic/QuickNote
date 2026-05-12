@@ -23,16 +23,20 @@ const Notes = ({ showAlert }) => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      setLoading(true);
-      const ok = await getNotes();
-      if (!ok) { 
-        showAlert('Session expired. Please log in again.', 'error'); 
-        navigate('/login'); 
+      const shouldShowSkeleton = notes.length === 0;
+      if (shouldShowSkeleton) setLoading(true);
+
+      
+      await getNotes();
+      
+      if (shouldShowSkeleton) {
+        setTimeout(() => setLoading(false), 500);
+      } else {
+        setLoading(false);
       }
-      setTimeout(() => setLoading(false), 600);
     };
     fetchNotes();
-  }, [getNotes, navigate, showAlert]);
+  }, [getNotes, notes.length]);
 
   const updateNote = (currentNote) => {
     setSelectedNote(currentNote);
