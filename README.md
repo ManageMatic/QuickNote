@@ -1,230 +1,103 @@
-# 🚀 QuickNote
+# ⚡ QuickNote Pro
 
-### 🔐 Secure Full-Stack MERN Note-Taking Application
+**QuickNote Pro** is a premium, high-performance note-taking application built with the **MERN** stack. It combines a stunning **Glassmorphism** interface with advanced productivity features like voice-to-text, real-time reminders, and secure multi-factor authentication.
 
-![MERN](https://img.shields.io/badge/Stack-MERN-green)
-![Authentication](https://img.shields.io/badge/Auth-JWT-blue)
-![Database](https://img.shields.io/badge/Database-MongoDB-brightgreen)
-![Status](https://img.shields.io/badge/Status-Active-success)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+![QuickNote Pro Banner](https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=1200)
 
-> A secure and modern note-taking web application built using the MERN stack with advanced authentication, email verification, and password reset functionality.
+## ✨ Core Features
 
----
+### 📝 Advanced Note Management
+- **Rich Text Editing**: Full-featured editor powered by ReactQuill for styled notes.
+- **Organization**: Pin important notes, mark favorites, and categorize with dynamic tags.
+- **Soft Delete (Trash)**: A safety-net system for deleted notes with permanent deletion options.
+- **Reminders**: Integrated scheduling system with real-time browser notifications.
 
-## 🌟 Overview
+### 🎤 Intelligence & Accessibility
+- **Voice Capture (Speech-to-Text)**: Dictate your notes on the go using the built-in microphone feature (powered by Web Speech API).
+- **Search & Filter**: Blazing fast search and sorting (By Date, Title, or Tag).
 
-**QuickNote** is a full-stack production-style notes application designed with security, scalability, and user experience in mind.
+### 🛡️ Enterprise-Grade Security
+- **JWT & Refresh Tokens**: Secure session management with automated token refreshing.
+- **Email Verification**: Multi-step signup process with OTP verification.
+- **Password Recovery**: Secure password reset flow with premium HTML email templates.
+- **HTTP-Only Cookies**: Protection against XSS and sensitive data leakage.
 
-It includes:
-
-* Secure authentication with JWT (Access + Refresh Tokens)
-* Email verification system
-* Forgot & Reset password via email code
-* Protected routes
-* Notes management with advanced features
-* Responsive modern UI
-
-This project demonstrates real-world backend authentication logic and frontend state management using React.
-
----
-
-## ✨ Features
-
-### 🔐 Authentication & Security
-
-* JWT Access & Refresh Token implementation
-* HttpOnly cookies
-* Token refresh flow
-* Rate limiting on login attempts
-* Password hashing using bcrypt
-* Email verification via OTP code
-* Secure password reset system
-
-### 📝 Notes Features
-
-* Create, edit, delete notes
-* Pin / Unpin important notes
-* Trash & Restore notes
-* Permanent delete functionality
-* Sort & Filter notes
-* Rich text support
-
-### 👤 User Features
-
-* Custom avatar upload
-* Gravatar integration
-* Profile management
-* Secure logout
-* Responsive UI design
-
-### 🌙 UI/UX
-
-* Dark mode toggle
-* Fully responsive layout
-* Clean modern design
-* Illustration-based authentication pages
+### 🎨 Stunning UI/UX
+- **Glassmorphism Design**: A modern, frosted-glass aesthetic with deep indigo/purple hues.
+- **Framer Motion**: Smooth page transitions and micro-animations for a premium feel.
+- **Skeleton Loading**: High-visibility shimmer effects for a seamless data-fetching experience.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Tech Stack
 
-### Frontend
-
-* React.js
-* React Router
-* Context API
-* CSS3
-* Fetch API
-
-### Backend
-
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT (jsonwebtoken)
-* bcryptjs
-* Nodemailer
-* Express Rate Limit
+- **Frontend**: React 18, Vite, Framer Motion, React-Toastify, React-Quill.
+- **Backend**: Node.js, Express, Mongoose.
+- **Database**: MongoDB (Local/Atlas).
+- **Authentication**: JSON Web Tokens (JWT), BcryptJS.
+- **Mailing**: Nodemailer (Gmail SMTP).
 
 ---
 
-## 📸 Screenshots
+## 🛠️ Installation & Setup
 
-### 🔐 Login Page
-![Login](screenshots/Login.png)
+### 1. Prerequisites
+- Node.js installed
+- MongoDB running locally or a MongoDB Atlas URI
 
-### 📝 Dashboard
-![Dashboard](screenshots/Home.png)
-
-### 📧 About
-![About](screenshots/About.png)
-
-### 👤 Signup
-![Signup](screenshots/Signup.png)
-
-### 🔁 Forgot Password
-![Forgot Password](screenshots/Forgot-Password.png)
-
----
-
-## ⚙️ Installation Guide
-
-### 1️⃣ Clone Repository
-
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/yourusername/quicknote.git
 cd quicknote
 ```
 
----
+### 3. Backend Configuration
+Navigate to the `backend` folder and create a `.env` file:
+```env
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+EMAIL_USER=your_gmail_address
+EMAIL_PASS=your_app_password
+```
 
-### 2️⃣ Setup Backend
-
+### 4. Install Dependencies
 ```bash
+# Install root dependencies
+npm install
+
+# Install backend dependencies
 cd backend
 npm install
-```
 
-Create a `.env` file in backend:
-
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/quicknote
-ACCESS_SECRET=your_access_secret
-REFRESH_SECRET=your_refresh_secret
-JWT_SECRET=your_jwt_secret
-EMAIL_USER=your_email
-EMAIL_PASS=your_app_password
-CLIENT_ORIGIN=http://localhost:3000
-```
-
-Run backend:
-
-```bash
-nodemon index.js
-```
-
----
-
-### 3️⃣ Setup Frontend
-
-```bash
-cd ../frontend
+# Install frontend dependencies
+cd ..
 npm install
-npm start
 ```
 
----
-
-### Or Run Both Together
-
-From root folder:
-
+### 5. Running the Application
+Use the concurrent runner to start both servers at once:
 ```bash
 npm run both
 ```
+The app will be available at `http://localhost:3000`.
 
 ---
 
-## 🔐 Security Architecture
+## 📬 API Routes (Summary)
 
-QuickNote follows a secure authentication design:
-
-* Access token (short-lived)
-* Refresh token (stored in HttpOnly cookies)
-* Automatic refresh mechanism
-* Email verification before sensitive actions
-* Password reset via time-limited OTP
-* Rate limiting for login protection
-
----
-
-## 📂 Project Structure
-
-```
-QuickNote/
-│
-├── backend/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── utils/
-│   └── index.js
-│
-├── frontend/
-│   ├── src/
-│   └── public/
-│
-├── screenshots/
-├── README.md
-└── .env.example
-```
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/createuser` | Register a new user |
+| `POST` | `/api/auth/login` | Authenticate user & issue tokens |
+| `GET` | `/api/notes/fetchallnotes` | Retrieve all user notes |
+| `POST` | `/api/notes/addnote` | Create a new note |
+| `PUT` | `/api/notes/updatenote/:id` | Update an existing note |
+| `PUT` | `/api/notes/trash/:id` | Move note to trash |
 
 ---
 
-## 🚀 Future Improvements
-
-* Deploy to Vercel + Render
-* Add Google OAuth login
-* Add Markdown editor
-* Add real-time sync
-* Add mobile app version
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
-
-## 👨‍💻 Author
-
-**Ishan Mahida**
-
-* GitHub: https://github.com/ManageMatic
-* LinkedIn: https://www.linkedin.com/in/ishan-mahida-b90959338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
+*Built with ❤️ by [Ishan Mahida](https://ishan-mahida.vercel.app/)*
