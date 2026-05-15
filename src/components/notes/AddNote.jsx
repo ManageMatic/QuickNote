@@ -3,13 +3,56 @@ import NoteContext from '../../context/notes/NoteContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTimes, faClock, faTag, faHeading, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes, faClock, faTag, faHeading, faPalette, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/AddNote.css';
 
 const AddNote = ({ showAlert }) => {
   const { addNote } = useContext(NoteContext);
   const [note, setNote] = useState({ title: '', description: '', tag: '', reminder: '', color: 'transparent' });
   const [expanded, setExpanded] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+
+  // 🎤 Speech Recognition Setup
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+  if (recognition) {
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+      // Get the latest result only to avoid duplication
+      const currentResultIndex = event.resultIndex;
+      const transcript = event.results[currentResultIndex][0].transcript;
+      
+      if (event.results[currentResultIndex].isFinal) {
+        setNote(prev => ({
+          ...prev,
+          description: prev.description + ' ' + transcript
+        }));
+      }
+    };
+
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+  }
+
+  const toggleListening = () => {
+    if (!recognition) {
+      showAlert('Speech recognition is not supported in this browser.', 'error');
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+      setIsListening(false);
+    } else {
+      recognition.start();
+      setIsListening(true);
+      setExpanded(true);
+    }
+  };
 
   const colors = [
     { name: 'Default', value: 'transparent' },
@@ -126,6 +169,14 @@ const AddNote = ({ showAlert }) => {
               onClick={() => { setExpanded(false); setNote({ title: '', description: '', tag: '', reminder: '', color: 'transparent' }); }}
             >
               <FontAwesomeIcon icon={faTimes} /> Cancel
+            </button>
+            <button
+              type="button"
+              className={`btn-mic ${isListening ? 'listening' : ''}`}
+              onClick={toggleListening}
+              title={isListening ? 'Stop Listening' : 'Dictate Note'}
+            >
+              <FontAwesomeIcon icon={isListening ? faMicrophoneSlash : faMicrophone} />
             </button>
             <button type="submit" className="btn-primary-glow" disabled={!canSubmit}>
               <FontAwesomeIcon icon={faPlus} /> Add Note

@@ -23,20 +23,16 @@ const Notes = ({ showAlert }) => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const shouldShowSkeleton = notes.length === 0;
-      if (shouldShowSkeleton) setLoading(true);
-
+      // Always show skeleton for a brief moment for smooth transition
+      setLoading(true);
       
       await getNotes();
       
-      if (shouldShowSkeleton) {
-        setTimeout(() => setLoading(false), 500);
-      } else {
-        setLoading(false);
-      }
+      // Artificial delay to make the loading effect visible and smooth
+      setTimeout(() => setLoading(false), 400);
     };
     fetchNotes();
-  }, [getNotes, notes.length]);
+  }, [getNotes]);
 
   const updateNote = (currentNote) => {
     setSelectedNote(currentNote);

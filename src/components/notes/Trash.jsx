@@ -1,14 +1,21 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import NoteContext from '../../context/notes/NoteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashRestore, faTrashAlt, faTrash as faTrashIcon } from '@fortawesome/free-solid-svg-icons';
+import SkeletonCard from './SkeletonCard';
 import '../styles/Trash.css';
 
 const Trash = ({ showAlert }) => {
   const { notes, getNotes, restoreNote, deleteNoteForever } = useContext(NoteContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getNotes();
+    const fetchNotes = async () => {
+      setLoading(true);
+      await getNotes();
+      setTimeout(() => setLoading(false), 400);
+    };
+    fetchNotes();
   }, [getNotes]);
 
   const trashedNotes = notes.filter(n => n.trashed);
@@ -20,13 +27,15 @@ const Trash = ({ showAlert }) => {
         <p className="trash-subtitle">Notes here will be kept until permanently deleted.</p>
       </div>
 
-      {trashedNotes.length === 0 ? (
-        <div className="trash-empty glass">
-          <p>Trash is empty</p>
-        </div>
-      ) : (
-        <div className="trash-grid">
-          {trashedNotes.map(note => (
+      <div className="trash-grid">
+        {loading ? (
+          Array(3).fill(0).map((_, i) => <SkeletonCard key={i} />)
+        ) : trashedNotes.length === 0 ? (
+          <div className="trash-empty glass" style={{ gridColumn: '1/-1' }}>
+            <p>Trash is empty</p>
+          </div>
+        ) : (
+          trashedNotes.map(note => (
             <div key={note._id} className="note-card glass trashed">
               <div className="note-content">
                 <h5 className="note-title">{note.title}</h5>
@@ -43,9 +52,9 @@ const Trash = ({ showAlert }) => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 };
