@@ -196,5 +196,7 @@
 @media (max-width: 768px) {
   .auth-page { grid-template-columns: 1fr; }
   .auth-panel-left { display: none; }
-  .auth-panel-right { padding: 2rem 1.25rem; min-height: 100vh; }
+  .auth-panel-right { padding: 1.5rem 1rem; min-height: 100vh; display: flex; align-items: flex-start; padding-top: 2rem; }
+  .auth-form-card { padding: 1.5rem; border-radius: var(--radius-md); }
+  .auth-title { font-size: 1.4rem; }
 }

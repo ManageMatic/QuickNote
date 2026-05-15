@@ -63,6 +63,19 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Fluid base font size */
+  font-size: clamp(14px, 1vw + 10px, 16px);
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 1rem; }
 }
 
 /* ─── Scrollbar ─────────────────────────────────────── */

@@ -30,11 +30,26 @@
 @media (max-width: 900px) {
   .dashboard-layout {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
   .dashboard-sidebar {
-    position: static;
+    position: relative;
+    top: 0;
     height: auto;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1rem;
+    order: 1; /* Keep sidebar/addnote at top on mobile */
+  }
+  .dashboard-main {
+    padding: 1.5rem 1rem;
+    order: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-page {
+    padding-top: 56px;
   }
 }
