@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faShieldAlt, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Login.css';
+import GoogleLoginButton from './GoogleLoginButton';
 
 const host = 'http://localhost:5000';
 
@@ -59,6 +60,29 @@ const Signup = ({ showAlert }) => {
     if (res.ok) { showAlert('Account created successfully', 'success'); navigate('/login'); }
     else { const e = await res.json(); showAlert(e.error || 'Failed to create account', 'error'); }
     setLoading(false);
+  };
+
+  const handleGoogleSuccess = async (credential) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${host}/api/auth/google-login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential }),
+      });
+      if (response.ok) {
+        showAlert('Registered and logged in with Google successfully', 'success');
+        navigate('/dashboard');
+      } else {
+        const err = await response.json();
+        showAlert(err.error || 'Google sign up failed', 'error');
+      }
+    } catch {
+      showAlert('Network error', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -168,6 +192,16 @@ const Signup = ({ showAlert }) => {
               {loading ? <span className="auth-spinner" /> : <>Create Account <FontAwesomeIcon icon={faArrowRight} /></>}
             </button>
           </form>
+
+          {/* Elegant divider */}
+          <div className="auth-divider">
+            <span className="auth-divider-line"></span>
+            <span className="auth-divider-text">OR</span>
+            <span className="auth-divider-line"></span>
+          </div>
+
+          {/* Google Sign In Button */}
+          <GoogleLoginButton onSuccess={handleGoogleSuccess} onError={(err) => showAlert(err, 'error')} />
 
           <div className="auth-footer-links">
             <p>Already have an account? <Link to="/login">Log in</Link></p>

@@ -15,6 +15,7 @@ import Reminders from '../pages/Reminders';
 
 const host = 'http://localhost:5000';
 const publicPaths = ['/login', '/signup', '/forgot-password', '/'];
+const authOnlyPaths = ['/login', '/signup', '/forgot-password'];
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -33,7 +34,11 @@ const AppContent = ({ showAlert, alert }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (publicPaths.includes(location.pathname)) return;
+    const isProtectedPath = !publicPaths.includes(location.pathname);
+
+    // If the user is already authenticated and navigating inside protected pages,
+    // we don't need to re-verify synchronously on every transition.
+    if (isAuthenticated && isProtectedPath) return;
 
     let intervalId;
 
@@ -44,41 +49,56 @@ const AppContent = ({ showAlert, alert }) => {
           credentials: 'include',
         });
 
+        if (res.ok) {
+          setIsAuthenticated(true);
+          // Directly access notes by redirecting auth pages and the landing page to dashboard
+          if (authOnlyPaths.includes(location.pathname) || location.pathname === '/') {
+            navigate('/dashboard');
+          }
+          ensureAccess();
+          intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
+          return;
+        }
+
+        // Try to refresh token if access token is invalid/expired
         if (res.status === 401 || res.status === 403) {
           const ref = await fetch(`${host}/api/auth/refresh-token`, {
             method: 'POST',
             credentials: 'include',
           });
 
-          if (!ref.ok) {
-            showAlert('Session expired. Please log in again.', 'error');
-            setIsAuthenticated(false);
-            navigate('/login');
+          if (ref.ok) {
+            setIsAuthenticated(true);
+            if (authOnlyPaths.includes(location.pathname) || location.pathname === '/') {
+              navigate('/dashboard');
+            }
+            ensureAccess();
+            intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
             return;
           }
         }
 
-        // Only update if state actually changes to prevent double-render
-        setIsAuthenticated(prev => {
-          if (!prev) return true;
-          return prev;
-        });
-        
-        ensureAccess();
-        intervalId = setInterval(ensureAccess, 10 * 60 * 1000);
+        // Both access and refresh tokens are completely expired or invalid
+        setIsAuthenticated(false);
+        if (isProtectedPath) {
+          showAlert('Session expired. Please log in again.', 'error');
+          navigate('/login');
+        }
       } catch (err) {
         console.error('Auth check failed:', err);
-        showAlert('Failed to verify session.', 'error');
         setIsAuthenticated(false);
-        navigate('/login');
+        if (isProtectedPath) {
+          showAlert('Failed to verify session.', 'error');
+          navigate('/login');
+        }
       }
     };
 
     verifySession();
-    return () => clearInterval(intervalId);
-  }, [location.pathname, navigate, showAlert]);
-
-  const authOnlyPaths = ['/login', '/signup', '/forgot-password'];
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [location.pathname, navigate, showAlert, isAuthenticated]);
   const isLandingPage = location.pathname === '/';
 
   return (
@@ -91,13 +111,13 @@ const AppContent = ({ showAlert, alert }) => {
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/"                element={<PageWrapper><Landing /></PageWrapper>} />
-          <Route path="/dashboard"       element={<PageWrapper><Home showAlert={showAlert} /></PageWrapper>} />
-          <Route path="/reminders"       element={<PageWrapper><Reminders showAlert={showAlert} /></PageWrapper>} />
-          <Route path="/trash"           element={<PageWrapper><Trash showAlert={showAlert} /></PageWrapper>} />
-          <Route path="/favorites"       element={<PageWrapper><Favorites showAlert={showAlert} /></PageWrapper>} />
-          <Route path="/login"           element={<PageWrapper><Login showAlert={showAlert} /></PageWrapper>} />
-          <Route path="/signup"          element={<PageWrapper><Signup showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
+          <Route path="/dashboard" element={<PageWrapper><Home showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/reminders" element={<PageWrapper><Reminders showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/trash" element={<PageWrapper><Trash showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/favorites" element={<PageWrapper><Favorites showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/login" element={<PageWrapper><Login showAlert={showAlert} /></PageWrapper>} />
+          <Route path="/signup" element={<PageWrapper><Signup showAlert={showAlert} /></PageWrapper>} />
           <Route path="/forgot-password" element={<PageWrapper><ForgotPassword showAlert={showAlert} /></PageWrapper>} />
         </Routes>
       </AnimatePresence>

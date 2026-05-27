@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const fetchUser = require('../middleware/fetchUser');
 const { body, validationResult } = require('express-validator');
 const { issueAccessToken, issueRefreshToken, verifyRefreshToken } = require('../utils/token');
 const { sendEmailVerification, sendPasswordResetEmail } = require('../utils/sendEmail');
 const SignupVerification = require('../models/SignupVerification');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -275,6 +279,75 @@ router.post('/reset-password', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');
+    }
+});
+
+// Route 11: Authenticate or register Google user using: POST "/api/auth/google-login"
+router.post('/google-login', async (req, res) => {
+    const { credential } = req.body;
+    if (!credential) {
+        return res.status(400).json({ error: 'No credential provided' });
+    }
+
+    try {
+        const ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        const { email, name, sub: googleId } = payload;
+
+        if (!email) {
+            return res.status(400).json({ error: 'Email not provided by Google account' });
+        }
+
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            // User does not exist, so register them
+            const salt = await bcrypt.genSalt(10);
+            // Generate a secure high-entropy random password
+            const randomPassword = crypto.randomBytes(32).toString('hex');
+            const secPass = await bcrypt.hash(randomPassword, salt);
+
+            user = await User.create({
+                name: name || 'Google User',
+                email: email,
+                password: secPass,
+                googleId: googleId,
+            });
+        } else {
+            // User exists, if they don't have googleId saved, link their Google account
+            if (!user.googleId) {
+                user.googleId = googleId;
+                await user.save();
+            }
+        }
+
+        // Issue JWT tokens
+        const accessToken = issueAccessToken(user);
+        const refreshToken = issueRefreshToken(user);
+
+        // Set the refresh token as a cookie
+        const cookieOpts = {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: false, // development
+            path: '/'
+        };
+
+        res.cookie('accessToken', accessToken, { ...cookieOpts, maxAge: 15 * 60 * 1000 })
+            .cookie('refreshToken', refreshToken, { ...cookieOpts, maxAge: 7 * 24 * 60 * 60 * 1000 })
+            .json({
+                success: true,
+                message: "Logged in successfully",
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            });
+
+    } catch (err) {
+        console.error('Google login failed:', err.message);
+        res.status(400).json({ error: 'Google authentication failed' });
     }
 });
 

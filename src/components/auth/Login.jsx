@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faBolt, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Login.css';
+import GoogleLoginButton from './GoogleLoginButton';
 
 const Login = ({ showAlert }) => {
   const [credentials, setCredentials] = React.useState({ email: '', password: '' });
@@ -25,6 +26,29 @@ const Login = ({ showAlert }) => {
         navigate('/dashboard');
       } else {
         showAlert('Invalid credentials', 'error');
+      }
+    } catch {
+      showAlert('Network error', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credential) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${host}/api/auth/google-login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential }),
+      });
+      if (response.ok) {
+        showAlert('Logged in with Google successfully', 'success');
+        navigate('/dashboard');
+      } else {
+        const err = await response.json();
+        showAlert(err.error || 'Google login failed', 'error');
       }
     } catch {
       showAlert('Network error', 'error');
@@ -107,6 +131,16 @@ const Login = ({ showAlert }) => {
               {loading ? <span className="auth-spinner" /> : <>Log In <FontAwesomeIcon icon={faArrowRight} /></>}
             </button>
           </form>
+
+          {/* Elegant divider */}
+          <div className="auth-divider">
+            <span className="auth-divider-line"></span>
+            <span className="auth-divider-text">OR</span>
+            <span className="auth-divider-line"></span>
+          </div>
+
+          {/* Google Sign In Button */}
+          <GoogleLoginButton onSuccess={handleGoogleSuccess} onError={(err) => showAlert(err, 'error')} />
 
           <div className="auth-footer-links">
             <p>Don't have an account? <Link to="/signup">Sign up free</Link></p>

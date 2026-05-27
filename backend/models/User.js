@@ -20,6 +20,7 @@ const UserSchema = new Schema({
     emailVerificationExpires: Date,
     resetCode: String,
     resetCodeExpires: Date,
+    googleId: String,
     date: {
         type: Date,
         default: () => {
