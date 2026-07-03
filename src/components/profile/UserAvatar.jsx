@@ -19,7 +19,7 @@ const UserAvatar = ({ showAlert }) => {
         const res = await fetch(`${host}/api/auth/getuser`, { method: 'POST', credentials: 'include' });
         if (res.ok) {
           const data = await res.json();
-          setUserData({ name: data.name, email: data.email, avatar: localStorage.getItem(`avatar_${data.email}`) || '' });
+          setUserData({ name: data.name, email: data.email, avatar: data.avatar || localStorage.getItem(`avatar_${data.email}`) || '' });
         }
       } catch (err) { console.error('Failed to fetch user', err); }
     };

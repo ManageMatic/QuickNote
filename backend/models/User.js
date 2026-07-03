@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     resetCode: String,
     resetCodeExpires: Date,
     googleId: String,
+    avatar: String,
     date: {
         type: Date,
         default: () => {

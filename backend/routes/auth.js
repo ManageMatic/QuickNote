@@ -292,7 +292,7 @@ router.post('/google-login', async (req, res) => {
             audience: process.env.GOOGLE_CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        const { email, name, sub: googleId } = payload;
+        const { email, name, picture, sub: googleId } = payload;
 
         if (!email) {
             return res.status(400).json({ error: 'Email not provided by Google account' });
@@ -312,11 +312,20 @@ router.post('/google-login', async (req, res) => {
                 email: email,
                 password: secPass,
                 googleId: googleId,
+                avatar: picture,
             });
         } else {
-            // User exists, if they don't have googleId saved, link their Google account
+            // User exists, if they don't have googleId or avatar saved, link/update them
+            let updated = false;
             if (!user.googleId) {
                 user.googleId = googleId;
+                updated = true;
+            }
+            if (picture && !user.avatar) {
+                user.avatar = picture;
+                updated = true;
+            }
+            if (updated) {
                 await user.save();
             }
         }
