@@ -39,7 +39,10 @@ const Trash = ({ showAlert }) => {
             <div key={note._id} className="note-card glass trashed">
               <div className="note-content">
                 <h5 className="note-title">{note.title}</h5>
-                <p className="note-description">{note.description}</p>
+                <div 
+                  className="note-description rich-text-content" 
+                  dangerouslySetInnerHTML={{ __html: note.description }}
+                />
               </div>
               <div className="note-footer">
                 <div className="note-actions-bottom">
