@@ -3,11 +3,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faEdit, faPalette, faFolder } from '@fortawesome/free-solid-svg-icons';
-import NoteContext from '../../context/notes/NoteContext';
-import { useContext } from 'react';
 
 const UpdateNoteModal = ({ isOpen, onClose, noteData, onSave, showAlert }) => {
-  const { folders } = useContext(NoteContext);
+  const folders = [];
   const [note, setNote] = useState({ _id: '', etitle: '', edescription: '', etag: '', ecolor: 'transparent', efolder: '' });
 
   const colors = [
