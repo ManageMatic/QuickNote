@@ -11,7 +11,7 @@ const UserAvatar = ({ showAlert }) => {
   const [userData, setUserData] = useState({ name: '', email: '', avatar: '' });
   const navigate = useNavigate();
   const popoverRef = useRef(null);
-  const host = 'http://localhost:5000';
+  const host = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const fetchUser = async () => {

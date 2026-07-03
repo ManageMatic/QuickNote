@@ -5,7 +5,7 @@ import { faUser, faEnvelope, faLock, faShieldAlt, faArrowRight } from '@fortawes
 import '../styles/Login.css';
 import GoogleLoginButton from './GoogleLoginButton';
 
-const host = 'http://localhost:5000';
+const host = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Signup = ({ showAlert }) => {
   const [credentials, setCredentials] = useState({ name: '', email: '', password: '', cpassword: '' });

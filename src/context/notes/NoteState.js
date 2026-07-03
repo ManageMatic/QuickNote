@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import NoteContext from './NoteContext';
 import { toast } from 'react-toastify';
 
-const host = 'http://localhost:5000';
+const host = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const NoteState = (props) => {
     /* -------- State -------- */

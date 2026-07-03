@@ -13,7 +13,7 @@ import ForgotPassword from '../auth/ForgotPassword';
 import Favorites from '../pages/Favorites';
 import Reminders from '../pages/Reminders';
 
-const host = 'http://localhost:5000';
+const host = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const publicPaths = ['/login', '/signup', '/forgot-password', '/'];
 const authOnlyPaths = ['/login', '/signup', '/forgot-password'];
 

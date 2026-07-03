@@ -9,7 +9,7 @@ const Login = ({ showAlert }) => {
   const [credentials, setCredentials] = React.useState({ email: '', password: '' });
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
-  const host = 'http://localhost:5000';
+  const host = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
