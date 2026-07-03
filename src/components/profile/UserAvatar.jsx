@@ -34,8 +34,8 @@ const UserAvatar = ({ showAlert }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     showAlert('Logged out successfully', 'success');
     navigate('/login');
   };
