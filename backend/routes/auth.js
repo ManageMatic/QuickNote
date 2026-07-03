@@ -15,6 +15,14 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const isProd = process.env.CLIENT_ORIGIN && !process.env.CLIENT_ORIGIN.includes('localhost');
+const cookieOpts = {
+    httpOnly: true,
+    sameSite: isProd ? 'none' : 'lax',
+    secure: isProd ? true : false,
+    path: '/'
+};
+
 // Route 1: Create user using: POST "api/auth/createuser"
 router.post('/createuser', [
     body('name').isLength({ min: 3 }),
@@ -94,13 +102,6 @@ router.post('/login', [
         const refreshToken = issueRefreshToken(user);
 
         // Set the refresh token as a cookie
-        const cookieOpts = {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
-            path: '/'
-        };
-
         res.cookie('accessToken', accessToken, { ...cookieOpts, maxAge: 15 * 60 * 1000 })
             .cookie('refreshToken', refreshToken, { ...cookieOpts, maxAge: 7 * 24 * 60 * 60 * 1000 })
             .json({
@@ -142,12 +143,8 @@ router.post('/refresh-token', async (req, res) => {
             return res.status(403).json({ error: "User not found" });
         }
         const newAccessToken = issueAccessToken(user);
-        res.cookie('accessToken', newAccessToken, {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
-            maxAge: 15 * 60 * 1000 // 15 minutes
-        }).json({ success: true, accessToken: newAccessToken });
+        res.cookie('accessToken', newAccessToken, { ...cookieOpts, maxAge: 15 * 60 * 1000 })
+            .json({ success: true, accessToken: newAccessToken });
     } catch (error) {
         console.error(error.message);
         res.status(403).json({ error: "Invalid refresh token" });
@@ -157,8 +154,8 @@ router.post('/refresh-token', async (req, res) => {
 // Route 5: Logout user using: POST "api/auth/logout"
 router.post('/logout', (_req, res) => {
     res
-        .clearCookie('accessToken', { path: '/', sameSite: 'lax' })
-        .clearCookie('refreshToken', { path: '/', sameSite: 'lax' })
+        .clearCookie('accessToken', cookieOpts)
+        .clearCookie('refreshToken', cookieOpts)
         .json({ success: true });
 });
 
@@ -329,13 +326,6 @@ router.post('/google-login', async (req, res) => {
         const refreshToken = issueRefreshToken(user);
 
         // Set the refresh token as a cookie
-        const cookieOpts = {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: false, // development
-            path: '/'
-        };
-
         res.cookie('accessToken', accessToken, { ...cookieOpts, maxAge: 15 * 60 * 1000 })
             .cookie('refreshToken', refreshToken, { ...cookieOpts, maxAge: 7 * 24 * 60 * 60 * 1000 })
             .json({
